@@ -15,3 +15,4 @@ python zone1_discovery.py                                   # all 3 countries ×
 4. Output — zone1_singapore_pillar6.json etc. with structure like:
 {"6.1": [{"title": "PDPA 2012", "url": "https://sso.agc.gov.sg/...", "query_used": "...", "relevance_score": 0.4}], "6.2": [...]}
 
+# pillar_ai

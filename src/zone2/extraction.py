@@ -34,14 +34,18 @@ async def prefilter_candidate(model, indicator_id, indicator_data, candidate):
         "Always respond with valid JSON and nothing else."
     )
 
-    result = await llm_call(model, system, prompt, max_tokens=200, retries=2)
-    if not result:
-        return True
+    # Try up to 3 times with empty-response retries
+    for _ in range(3):
+        result = await llm_call(model, system, prompt, max_tokens=200, retries=2)
+        if result:
+            parsed = parse_json_response(result)
+            if parsed is not None:
+                return parsed.get("relevant", True)
+        log.warning("  Pre-filter: empty/invalid response, retrying...")
+        await asyncio.sleep(2)
 
-    parsed = parse_json_response(result)
-    if parsed is None:
-        return True
-    return parsed.get("relevant", True)
+    log.warning("  Pre-filter: LLM consistently returned empty — skipping candidate")
+    return False
 
 
 async def scrape_url(url):

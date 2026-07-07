@@ -1,0 +1,1187 @@
+{
+  "6.1": [
+    {
+      "indicator": "6.1",
+      "title": "Personal Data Protection Act 2012 (PDPA)",
+      "url": "https://sso.agc.gov.sg/Act/PDPA2012",
+      "snippet": "An Act to govern the collection, use and disclosure of personal data by organisations. Section 26 governs cross-border data transfers.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Personal Data Protection Regulations 2021 — Transfer Limitation Obligation",
+      "url": "https://sso.agc.gov.sg/SL-Supp/S63-2021",
+      "snippet": "Prescribes requirements for cross-border data transfers under Section 26 of the PDPA, including  contractual safeguards and certification.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Comprehensive And Progressive Agreement For Trans-Pacific Partnership - Singapore",
+      "url": "https://www.dfat.gov.au/trade/agreements/in-force/cptpp/comprehensive-and-progressive-agreement-for-trans-pacific-partnership",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2018"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Korea-Singapore Digital Partnership Agreement (Ksdpa)",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/slsfta#:~:text=The%20Sri%20Lanka%2DSingapore%20Free,operating%20environment%20for%20service%20suppliers.",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2023"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Regional Comprehensive Economic Partnership Agreement - Singapore",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/pacific-alliance-singapore-free-trade-agreement",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2022"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://sso.agc.gov.sg/Acts-Supp/40-2020/",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.pdpc.gov.sg/Who-We-Are/About-Us",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.mddi.gov.sg/media-centre/press-releases/new-chief-executive-appointed-to-infocomm-media-development-authority/",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/ms-denise-wong-appointed-as-commissioner-for-pdpc",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Caning in Singapore",
+      "url": "https://web.archive.org/web/20160113003815/http://statutes.agc.gov.sg/non_version/cgi-bin/cgi_retrieve.pl?actno=REVED-68&doctitle=CRIMINAL%20PROCEDURE%20CODE%0A&date=latest&method=whole&doctitle=",
+      "snippet": "From Wikipedia: Caning in Singapore (search)",
+      "query_used": "wikipedia:search:Caning in Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Changi Airport",
+      "url": "https://aim-sg.caas.gov.sg/aip/2021-05-04/final/2021-05-04/html/index-en-GB.html",
+      "snippet": "From Wikipedia: Changi Airport (search)",
+      "query_used": "wikipedia:search:Changi Airport",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Changi Airport",
+      "url": "https://web.archive.org/web/20150923195740/http://www.caas.gov.sg/caasWeb2010/export/sites/caas/en/Regulations/Aeronautical_Information/AIP/aerodrome/AD_WSSS/WSSS-AD2-1.pdf",
+      "snippet": "From Wikipedia: Changi Airport (search)",
+      "query_used": "wikipedia:search:Changi Airport",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Changi Airport",
+      "url": "https://eresources.nlb.gov.sg/infopedia/articles/SIP_574_2004-12-23.html",
+      "snippet": "From Wikipedia: Changi Airport (search)",
+      "query_used": "wikipedia:search:Changi Airport",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Changi Airport",
+      "url": "https://eresources.nlb.gov.sg/newspapers/Digitised/Article/newpaper19901122-1.2.15.2",
+      "snippet": "From Wikipedia: Changi Airport (search)",
+      "query_used": "wikipedia:search:Changi Airport",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Changi Airport",
+      "url": "https://eresources.nlb.gov.sg/newspapers/Digitised/Article/straitstimes20080110-1.2.9.3",
+      "snippet": "From Wikipedia: Changi Airport (search)",
+      "query_used": "wikipedia:search:Changi Airport",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Changi Airport",
+      "url": "https://web.archive.org/web/20060926022454/http://www.caas.gov.sg/caas/en/About_CAAS/Our_Divisions.html?__locale=en",
+      "snippet": "From Wikipedia: Changi Airport (search)",
+      "query_used": "wikipedia:search:Changi Airport",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.1",
+      "title": "Changi Airport",
+      "url": "http://www.caas.gov.sg/caas/en/About_CAAS/Our_Divisions.html?__locale=en",
+      "snippet": "From Wikipedia: Changi Airport (search)",
+      "query_used": "wikipedia:search:Changi Airport",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    }
+  ],
+  "6.2": [
+    {
+      "indicator": "6.2",
+      "title": "Personal Data Protection Act 2012 (PDPA)",
+      "url": "https://sso.agc.gov.sg/Act/PDPA2012",
+      "snippet": "An Act to govern the collection, use and disclosure of personal data. No explicit data localization requirement — conditional transfer regime only.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Comprehensive And Progressive Agreement For Trans-Pacific Partnership - Singapore",
+      "url": "https://www.dfat.gov.au/trade/agreements/in-force/cptpp/comprehensive-and-progressive-agreement-for-trans-pacific-partnership",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2018"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Korea-Singapore Digital Partnership Agreement (Ksdpa)",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/slsfta#:~:text=The%20Sri%20Lanka%2DSingapore%20Free,operating%20environment%20for%20service%20suppliers.",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2023"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Regional Comprehensive Economic Partnership Agreement - Singapore",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/pacific-alliance-singapore-free-trade-agreement",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2022"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://sso.agc.gov.sg/Acts-Supp/40-2020/",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.pdpc.gov.sg/Who-We-Are/About-Us",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.mddi.gov.sg/media-centre/press-releases/new-chief-executive-appointed-to-infocomm-media-development-authority/",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/ms-denise-wong-appointed-as-commissioner-for-pdpc",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Cold Storage (supermarket)",
+      "url": "https://eresources.nlb.gov.sg/infopedia/articles/SIP_98_2005-01-20.html",
+      "snippet": "From Wikipedia: Cold Storage (supermarket) (search)",
+      "query_used": "wikipedia:search:Cold Storage (supermarket)",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Cold Storage (supermarket)",
+      "url": "https://eresources.nlb.gov.sg/newspapers/digitised/article/biztimes19850227-1.2.35.13?qt=dayabumi&q=dayabumi%20",
+      "snippet": "From Wikipedia: Cold Storage (supermarket) (search)",
+      "query_used": "wikipedia:search:Cold Storage (supermarket)",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Cold Storage (supermarket)",
+      "url": "https://eresources.nlb.gov.sg/newspapers/digitised/article/biztimes19880210-1.2.37.7?qt=hankyu,%20jaya&q=hankyu%20jaya",
+      "snippet": "From Wikipedia: Cold Storage (supermarket) (search)",
+      "query_used": "wikipedia:search:Cold Storage (supermarket)",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Cold Storage (supermarket)",
+      "url": "https://eresources.nlb.gov.sg/newspapers/digitised/article/straitstimes19731127-1.2.118.7?qt=jaya,%20supermarket&q=jaya%20supermarket",
+      "snippet": "From Wikipedia: Cold Storage (supermarket) (search)",
+      "query_used": "wikipedia:search:Cold Storage (supermarket)",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.2",
+      "title": "Cold Storage (supermarket)",
+      "url": "https://eresources.nlb.gov.sg/newspapers/digitised/article/straitstimes19740705-1.2.111.21?qt=jaya,%20supermarket&q=jaya%20supermarket",
+      "snippet": "From Wikipedia: Cold Storage (supermarket) (search)",
+      "query_used": "wikipedia:search:Cold Storage (supermarket)",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    }
+  ],
+  "6.3": [
+    {
+      "indicator": "6.3",
+      "title": "Cybersecurity Act 2018",
+      "url": "https://sso.agc.gov.sg/Act/CA2018",
+      "snippet": "An Act to require cybersecurity information sharing and to establish the Cybersecurity Agency of Singapore. Covers critical information infrastructure.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.3",
+      "title": "IMDA Advisory Guidelines on Cloud Services and Data Centres",
+      "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2025/advisory-guidelines-of-cloud-services-and-data-centres",
+      "snippet": "Advisory guidelines on cloud services and data centre requirements in Singapore.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Code Of Practice For Competition In The Provision Of Telecommunication And Media Services 2022 Issued By Infocomm Media Development Authority (Imda)",
+      "url": "https://www.imda.gov.sg/-/media/imda/files/regulation-licensing-and-consultations/frameworks-and-policies/competition-management/telecom-competition-code/code-of-practice-for-competition-for-the-provision-of-telecom--media-services-wef-2may2022.pdf",
+      "snippet": "Lack of passive infrastructure sharing",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Telecommunications sector",
+      "timeframe": "Since 2022"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Telecommunications Act 1999",
+      "url": "https://sso.agc.gov.sg/Act/TA1999#pr3-",
+      "snippet": "Lack of passive infrastructure sharing",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Telecommunications sector",
+      "timeframe": "Since December 1999 last amened in December 2021"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Personal Data Protection (Amendment) Act 2020",
+      "url": "https://sso.agc.gov.sg/Acts-Supp/40-2020/",
+      "snippet": "Infrastructure requirements",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since February 2021"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://sso.agc.gov.sg/Act/PDPA2012",
+      "snippet": "Infrastructure requirements",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2012 last amended on 1 February 2021"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Comprehensive And Progressive Agreement For Trans-Pacific Partnership - Singapore",
+      "url": "https://www.dfat.gov.au/trade/agreements/in-force/cptpp/comprehensive-and-progressive-agreement-for-trans-pacific-partnership",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2018"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Korea-Singapore Digital Partnership Agreement (Ksdpa)",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/slsfta#:~:text=The%20Sri%20Lanka%2DSingapore%20Free,operating%20environment%20for%20service%20suppliers.",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2023"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Regional Comprehensive Economic Partnership Agreement - Singapore",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/pacific-alliance-singapore-free-trade-agreement",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2022"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.csa.gov.sg/",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.csa.gov.sg/News/Publications/singapore-cybersecurity-strategy-2021",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.csa.gov.sg/Programmes/csa-common-criteria/about",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.csa.gov.sg/Programmes/cybersecurity-labelling/about-cls",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.csa.gov.sg/Programmes/SGCyberTalent/About",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.csa.gov.sg/Programmes/SGCyberTalent/SGCyberWomen",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.csa.gov.sg/Programmes/sgcybersafe/about",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.nas.gov.sg/archivesonline/data/data/pdfdoc/20170919015/Joint%20Call%20on%20Acting%20Prime%20Minister%20Teo%20Chee%20Hean%20by%20Participants%20of%20the%202nd%20ASEAN%20Ministerial%20Conference%20on%20Cybersecurity.pdf",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://web.archive.org/web/20220105071212/https://www.nas.gov.sg/archivesonline/data/data/pdfdoc/20170919015/Joint%20Call%20on%20Acting%20Prime%20Minister%20Teo%20Chee%20Hean%20by%20Participants%20of%20the%202nd%20ASEAN%20Ministerial%20Conference%20on%20Cybersecurity.pdf",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://web.archive.org/web/20211005135241/https://www.csa.gov.sg/News/Publications/singapore-cybersecurity-strategy-2021",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://web.archive.org/web/20201007081315/https://www.csa.gov.sg/programmes/cybersecurity-labelling/about-cls",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://web.archive.org/web/20200810110430/https://www.csa.gov.sg/programmes/sgcybertalent/about",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://web.archive.org/web/20200928100820/https://www.csa.gov.sg/programmes/sgcybertalent/sgcyberwomen",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://web.archive.org/web/20211020063535/https://www.csa.gov.sg/Programmes/sgcybersafe/about",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "http://csa.gov.sg/",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://web.archive.org/web/20211023051018/https://www.csa.gov.sg/Programmes/csa-common-criteria/about",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.3",
+      "title": "Cyber Security Agency",
+      "url": "https://www.nas.gov.sg/archivesonline/data/pdfdoc/20160927002/Press%20release%20-%20Singapore%20International%20Cyber%20Week%202016_27%20Sep%202016.pdf",
+      "snippet": "From Wikipedia: Cyber Security Agency (curated)",
+      "query_used": "wikipedia:curated:Cyber Security Agency",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    }
+  ],
+  "6.4": [
+    {
+      "indicator": "6.4",
+      "title": "Personal Data Protection Act 2012 (PDPA) — Section 26",
+      "url": "https://sso.agc.gov.sg/Act/PDPA2012",
+      "snippet": "Section 26 establishes a conditional flow regime requiring comparable protection for cross-border data transfers.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.4",
+      "title": "PDPC Guide to Cross-Border Data Transfers",
+      "url": "https://www.pdpc.gov.sg/organisations/resources/guidance-by-topic/guide-to-cross-border-data-transfers",
+      "snippet": "Guidance on the Transfer Limitation Obligation under the PDPA for cross-border data transfers.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Comprehensive And Progressive Agreement For Trans-Pacific Partnership - Singapore",
+      "url": "https://www.dfat.gov.au/trade/agreements/in-force/cptpp/comprehensive-and-progressive-agreement-for-trans-pacific-partnership",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2018"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Korea-Singapore Digital Partnership Agreement (Ksdpa)",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/slsfta#:~:text=The%20Sri%20Lanka%2DSingapore%20Free,operating%20environment%20for%20service%20suppliers.",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2023"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Regional Comprehensive Economic Partnership Agreement - Singapore",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/pacific-alliance-singapore-free-trade-agreement",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2022"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://sso.agc.gov.sg/Acts-Supp/40-2020/",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.pdpc.gov.sg/Who-We-Are/About-Us",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.mddi.gov.sg/media-centre/press-releases/new-chief-executive-appointed-to-infocomm-media-development-authority/",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Personal Data Protection Act 2012",
+      "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/ms-denise-wong-appointed-as-commissioner-for-pdpc",
+      "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
+      "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
+      "relevance_score": 0.0,
+      "source": "new_discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.singstat.gov.sg/",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.edb.gov.sg/edb/sg/en_uk/index/industry_sectors/energy/facts_and_figures.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.istana.gov.sg/content/istana/thepresident.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.mha.gov.sg/basic_content.aspx?pageid=74",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.singstat.gov.sg/SDDS/data.html#ext",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.mas.gov.sg/currency/currency_info/Heritage_Collection.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.singstat.gov.sg/stats/themes/economy/ess/essa11.pdf",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.moe.gov.sg/media/parliamentary-replies/2009/03/foreign-students-in-singapore.php",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.edb.gov.sg/edb/sg/en_uk/index/industry_sectors/marine___offshore/facts_and_figures.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.mfa.gov.sg/content/mfa/missions/singapore_mission/mission_locator.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.mindef.gov.sg/imindef/news_and_events/nr/2005/apr/21apr05_nr2.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Singapore",
+      "url": "http://www.mindef.gov.sg/imindef/news_and_events/nr/1999/aug/20aug99_nr.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "http://www.pmo.gov.sg/",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "http://statutes.agc.gov.sg/aol/search/display/view.w3p;page=0;query=DocId:cf2412ff-fca5-4a64-a8ef-b95b8987728e%20Depth:0%20Status:inforce;rec=0",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://web.archive.org/web/20150507095558/http://www.psd.gov.sg/white-paper/white-paper",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "http://www.psd.gov.sg/docs/default-source/white-paper/white-20paper-20--20salaries-20for-20a-20capable-20and-20committed-20govt-1.pdf",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://web.archive.org/web/20160305011334/http://www.pmo.gov.sg/mediacentre/committee-review-salaries-president-prime-minister-and-political-appointment-holders",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "http://www.pmo.gov.sg/mediacentre/committee-review-salaries-president-prime-minister-and-political-appointment-holders",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "http://www.gov.sg/article/do-ministers-get-free-healthcare",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://sso.agc.gov.sg/Act/CONS1963#pr150-",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://sso.agc.gov.sg/Act/SAFA1972?ProvIds=P1II-#pr8-",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://sso.agc.gov.sg/Act/CONS1963#pr34-",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://sso.agc.gov.sg/Act/CONS1963#pr35-",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://www.gov.sg/article/the-powers-of-the-president",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://sso.agc.gov.sg/Act/CONS1963#pr24-",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://sso.agc.gov.sg/Act/CONS1963#pr151A-",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://sso.agc.gov.sg/Act/CONS1963?ProvIds=P15-#pr25-",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://www.istana.gov.sg/Pages/FAQs",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "http://www.police.gov.sg/Media-Room/Features/Leading-the-Specialised-Security-Command",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://eresources.nlb.gov.sg/newspapers/Digitised/Article/freepress19591118-1.2.5",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://eresources.nlb.gov.sg/newspapers/Digitised/Article/straitstimes19590605-1.2.132",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://eresources.nlb.gov.sg/newspapers/Digitised/Article/straitstimes19640731-1.2.4",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://eresources.nlb.gov.sg/newspapers/Digitised/Article/straitstimes19640620-1.2.56",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.4",
+      "title": "Prime Minister of Singapore",
+      "url": "https://www.pmo.gov.sg/Newsroom/National-Day-Message-2024",
+      "snippet": "From Wikipedia: Prime Minister of Singapore (search)",
+      "query_used": "wikipedia:search:Prime Minister of Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    }
+  ],
+  "6.5": [
+    {
+      "indicator": "6.5",
+      "title": "Singapore Digital Economy Agreements (DEAs)",
+      "url": "https://www.mti.gov.sg/trade-international-economic-relations/agreements/digital-economy-agreements-dea/",
+      "snippet": "Overview of Singapore's Digital Economy Agreements including DEPA, UK-SG DEA, and others covering cross-border data flows.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.5",
+      "title": "CPTPP — Comprehensive and Progressive Agreement for Trans-Pacific Partnership",
+      "url": "https://www.mti.gov.sg/trade-international-economic-relations/agreements/free-trade-agreements/comprehensive-and-progressive-agreement-for-trans-pacific-partnership-cptpp",
+      "snippet": "CPTPP includes binding commitments on cross-border data transfers and data localization.",
+      "query_used": "seed_url (curated)",
+      "relevance_score": 1.0,
+      "source": "seed"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Comprehensive And Progressive Agreement For Trans-Pacific Partnership - Singapore",
+      "url": "https://www.dfat.gov.au/trade/agreements/in-force/cptpp/comprehensive-and-progressive-agreement-for-trans-pacific-partnership",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2018"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Korea-Singapore Digital Partnership Agreement (Ksdpa)",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/slsfta#:~:text=The%20Sri%20Lanka%2DSingapore%20Free,operating%20environment%20for%20service%20suppliers.",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2023"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Asean Australia New Zealand Free Trade Agreement (Aanzfta)",
+      "url": "https://www.mti.gov.sg/Trade/Digital-Economy-Agreements/The-Digital-Economy-Partnership-Agreement",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2010"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Pacific Alliance-Singapore Free Trade Agreement (Pasfta)",
+      "url": "https://www.mti.gov.sg/Trade/Digital-Economy-Agreements/KSDPA",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2025"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Digital Economy Agreement Between The United Kingdom Of Great Britain And Northern Ireland And The Republic Of Singapore",
+      "url": "https://rcepsec.org",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2022"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Digital Economy Partnership Agreement (Depa) - Singapore",
+      "url": "https://www.mti.gov.sg/Trade/Digital-Economy-Agreements/UKSDEA",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2024"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Regional Comprehensive Economic Partnership Agreement - Singapore",
+      "url": "https://www.enterprisesg.gov.sg/grow-your-business/go-global/international-agreements/free-trade-agreements/find-an-fta/pacific-alliance-singapore-free-trade-agreement",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2022"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore-Australia Free Trade Agreement",
+      "url": "https://www.dfat.gov.au/trade/agreements/in-force/safta/singapore-australia-fta",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2017"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Free Trade Agreement Between The Democratic Socialist Republic Of Sri Lanka And The Republic Of Singapore",
+      "url": "https://aanzfta.asean.org/aanzfta-overview",
+      "snippet": "Not in agreement with binding commitments on data transfer",
+      "query_used": "legal_inventory.csv",
+      "relevance_score": 1.0,
+      "source": "inventory",
+      "coverage": "Cross-cutting",
+      "timeframe": "Since 2018"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Digital Economy Partnership Agreement",
+      "url": "https://www.mti.gov.sg/Improving-Trade/Digital-Economy-Agreements/The-Digital-Economy-Partnership-Agreement",
+      "snippet": "From Wikipedia: Digital Economy Partnership Agreement (curated)",
+      "query_used": "wikipedia:curated:Digital Economy Partnership Agreement",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Digital Economy Partnership Agreement",
+      "url": "https://www.mci.gov.sg/pressroom/news-and-stories/pressroom/2022/8/digital-economy-partnership-agreement-joint-committee-commences-accession-working-group-for-china",
+      "snippet": "From Wikipedia: Digital Economy Partnership Agreement (curated)",
+      "query_used": "wikipedia:curated:Digital Economy Partnership Agreement",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Digital Economy Partnership Agreement",
+      "url": "https://web.archive.org/web/20210118060435/https://www.mti.gov.sg/Improving-Trade/Digital-Economy-Agreements/The-Digital-Economy-Partnership-Agreement",
+      "snippet": "From Wikipedia: Digital Economy Partnership Agreement (curated)",
+      "query_used": "wikipedia:curated:Digital Economy Partnership Agreement",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.singstat.gov.sg/",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.edb.gov.sg/edb/sg/en_uk/index/industry_sectors/energy/facts_and_figures.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.istana.gov.sg/content/istana/thepresident.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.mha.gov.sg/basic_content.aspx?pageid=74",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.singstat.gov.sg/SDDS/data.html#ext",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.mas.gov.sg/currency/currency_info/Heritage_Collection.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.singstat.gov.sg/stats/themes/economy/ess/essa11.pdf",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.moe.gov.sg/media/parliamentary-replies/2009/03/foreign-students-in-singapore.php",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.edb.gov.sg/edb/sg/en_uk/index/industry_sectors/marine___offshore/facts_and_figures.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.mfa.gov.sg/content/mfa/missions/singapore_mission/mission_locator.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.mindef.gov.sg/imindef/news_and_events/nr/2005/apr/21apr05_nr2.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    },
+    {
+      "indicator": "6.5",
+      "title": "Singapore",
+      "url": "http://www.mindef.gov.sg/imindef/news_and_events/nr/1999/aug/20aug99_nr.html",
+      "snippet": "From Wikipedia: Singapore (search)",
+      "query_used": "wikipedia:search:Singapore",
+      "relevance_score": 0.0,
+      "source": "discovery"
+    }
+  ]
+}

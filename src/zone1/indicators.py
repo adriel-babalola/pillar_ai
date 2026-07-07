@@ -1,0 +1,131 @@
+PILLAR_6_INDICATORS = {
+    "6.1": {
+        "name": "Ban and local processing requirements",
+        "keywords": ["prohibit", "must not transfer", "local processing",
+                     "cross-border", "transfer personal data"],
+        "query_themes": [
+            "must not transfer personal data",
+            "prohibit cross-border transfer",
+            "local processing requirement [COUNTRY]",
+            "data shall not be transferred outside",
+            "prohibition on transfer of personal data",
+        ],
+    },
+    "6.2": {
+        "name": "Local storage requirements",
+        "keywords": ["local storage", "store data locally",
+                     "data shall be stored", "data localization",
+                     "records kept in"],
+        "query_themes": [
+            "data localization requirement [COUNTRY]",
+            "store data locally requirement",
+            "records must be kept in [COUNTRY]",
+            "data residency requirement",
+            "stored and processed within [COUNTRY]",
+        ],
+    },
+    "6.3": {
+        "name": "Infrastructure requirements",
+        "keywords": ["server located", "local server", "data centre",
+                     "computing facility", "infrastructure requirement"],
+        "query_themes": [
+            "server must be located in [COUNTRY]",
+            "local server requirement data",
+            "data centre located in [COUNTRY]",
+            "computing infrastructure requirement",
+            "server and data centre requirements",
+        ],
+    },
+    "6.4": {
+        "name": "Conditional flow regimes",
+        "keywords": ["consent", "adequacy decision",
+                     "contractual safeguards", "binding corporate rules",
+                     "data transfer exception"],
+        "query_themes": [
+            "data transfer conditions consent",
+            "adequacy decision cross-border data",
+            "contractual safeguards data transfer",
+            "binding corporate rules data protection",
+            "cross-border data flow conditions",
+        ],
+    },
+    "6.5": {
+        "name": "Not in binding data transfer agreements",
+        "keywords": ["CPTPP", "RCEP", "DEPA", "digital economy agreement",
+                     "free trade agreement", "cross-border data flow"],
+        "query_themes": [
+            "CPTPP [COUNTRY] data flows",
+            "RCEP cross-border data flows",
+            "DEPA digital economy partnership",
+            "digital economy agreement [COUNTRY]",
+            "free trade agreement data transfer",
+        ],
+    },
+}
+
+PILLAR_7_INDICATORS = {
+    "7.1": {
+        "name": "Lack of comprehensive data protection framework",
+        "keywords": ["data protection", "personal data",
+                     "privacy act", "data protection framework",
+                     "personal information"],
+        "query_themes": [
+            "data protection act [COUNTRY]",
+            "personal data protection law",
+            "privacy act",
+            "data protection framework",
+            "personal information protection law",
+        ],
+    },
+    "7.2": {
+        "name": "Lack of dedicated cybersecurity framework",
+        "keywords": ["cybersecurity", "cyber security",
+                     "information security", "computer misuse",
+                     "cybercrime"],
+        "query_themes": [
+            "cybersecurity act [COUNTRY]",
+            "cyber security law",
+            "information security act",
+            "computer misuse act",
+            "cybersecurity legislation",
+        ],
+    },
+    "7.3": {
+        "name": "Minimum period of data retention requirements",
+        "keywords": ["retain for", "retention period", "keep records",
+                     "data retention", "shall retain"],
+        "query_themes": [
+            "data retention requirement",
+            "records shall be retained for years",
+            "retention period personal data",
+            "keep records for minimum period",
+            "retention of personal data",
+        ],
+    },
+    "7.4": {
+        "name": "DPO/DPIA requirements",
+        "keywords": ["Data Protection Officer", "DPO",
+                     "Data Protection Impact Assessment", "DPIA",
+                     "privacy impact assessment"],
+        "query_themes": [
+            "Data Protection Officer requirement",
+            "appoint Data Protection Officer",
+            "Data Protection Impact Assessment",
+            "DPIA requirement",
+            "privacy impact assessment",
+        ],
+    },
+    "7.5": {
+        "name": "Government access to personal data",
+        "keywords": ["government access", "lawful access",
+                     "surveillance powers", "police access",
+                     "national security access"],
+        "query_themes": [
+            "government access to personal data",
+            "lawful access to data",
+            "surveillance powers data",
+            "police access to personal data",
+            "interception of communications law",
+        ],
+    },
+}

@@ -184,6 +184,40 @@ except ImportError:
     HAS_STEALTH = False
 
 
+def _expand_content(page):
+    """Click expandable UI elements to reveal hidden content."""
+    expand_selectors = [
+        "text=Select All",
+        "text=Read More",
+        "text=Read more",
+        "text=Show More",
+        "text=Show more",
+        "text=Expand All",
+        "text=Expand all",
+        "text=View More",
+        "text=View more",
+        "text=Show all",
+        "text=Show All",
+        "summary",  # HTML5 <details><summary>
+        "[aria-expanded=false]",
+    ]
+    for selector in expand_selectors:
+        try:
+            elements = page.locator(selector)
+            count = elements.count()
+            for i in range(min(count, 20)):
+                try:
+                    el = elements.nth(i)
+                    if el.is_visible(timeout=1000):
+                        el.click()
+                        page.wait_for_timeout(300)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+    page.wait_for_timeout(2000)
+
+
 def fetch_playwright(url, timeout=60):
     if not HAS_PLAYWRIGHT:
         return None
@@ -204,10 +238,15 @@ def fetch_playwright(url, timeout=60):
             page = context.new_page()
             if HAS_STEALTH:
                 stealth_sync(page)
-            page.goto(url, wait_until="domcontentloaded", timeout=timeout * 1000)
-            page.wait_for_selector("body", timeout=10000)
+            page.goto(url, wait_until="networkidle", timeout=timeout * 1000)
+            page.wait_for_timeout(3000)
+            _expand_content(page)
             page.evaluate("window.scrollTo(0, document.body.scrollHeight * 0.3)")
-            time.sleep(random.uniform(0.5, 1.5))
+            page.wait_for_timeout(1000)
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight * 0.7)")
+            page.wait_for_timeout(1000)
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(1000)
             content = page.content()
             browser.close()
             if content and len(content) >= 200:
@@ -262,17 +301,57 @@ def _cache_save(url, text, source):
     path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
 
 
+# ── Content quality checks ───────────────────────────────────────────
+
+def _has_js_garbage(text):
+    """Detect if text is navigation chrome (JS shell) instead of real content."""
+    nav_indicators = ["my collections", "all collections", "as published", "acts supplement",
+                      "bills supplement", "subsidiary legislation", "revised editions",
+                      "faqs", "feedback", "my collection", "collection"]
+    content_indicators = ["part i", "part ii", "part iii", "part iv", "section 1.",
+                          "section 2.", "section 3.", "this act", "provision of this"]
+    text_lower = text.lower()
+    nav_score = sum(1 for ni in nav_indicators if ni in text_lower)
+    content_score = sum(1 for ci in content_indicators if ci in text_lower)
+    if nav_score >= 3 and content_score < 2:
+        log.info("  Content quality: nav=%d content=%d — JS shell detected, switching to Playwright", nav_score, content_score)
+        return True
+    return False
+
+
 # ── Async hybrid scrape ──────────────────────────────────────────────
+
+_SSO_PDF_MAP = {
+    "PDPA2012": "https://sso.agc.gov.sg/Acts-Supp/26-2012/Published/20211231?DocDate=20121203&ViewType=Pdf",
+}
+
+
+def _normalize_ssourl(url):
+    """SSO pages need ProvIds=WholeDoc&ViewType=Adv or known PDF URLs."""
+    if "sso.agc.gov.sg" not in url:
+        return url
+    # Known Acts-Supp PDFs
+    for act_key, pdf_url in _SSO_PDF_MAP.items():
+        if f"Act/{act_key}" in url:
+            log.info("  Using known PDF URL for %s", act_key)
+            return pdf_url
+    # Otherwise try Advanced View params for JS rendering
+    if "sso.agc.gov.sg/Act/" in url and "ProvIds=" not in url and "ViewType=" not in url:
+        sep = "&" if "?" in url else "?"
+        return f"{url}{sep}ProvIds=WholeDoc&ViewType=Adv"
+    return url
+
 
 async def hybrid_scrape(url, proxy=None):
     """Try smart strategy.  Returns (text, source) or (None, reason)."""
+    url = _normalize_ssourl(url)
     cached = _cache_load(url)
     if cached:
         log.info("  Cache HIT: %s (%d chars)", url, len(cached))
         return cached, "cache"
 
     proxy = proxy or PROXY_URL
-    is_pdf = url.lower().endswith(".pdf")
+    is_pdf = url.lower().endswith(".pdf") or "viewtype=pdf" in url.lower()
 
     if is_pdf:
         content = fetch_curl_cffi(url, proxy=proxy)
@@ -285,7 +364,7 @@ async def hybrid_scrape(url, proxy=None):
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
                 "Accept": "application/pdf,application/x-pdf,*/*",
-                "Referer": "https://www.google.com/",
+                "Referer": "https://sso.agc.gov.sg/",
             }
             resp = std_requests.get(url, headers=headers, timeout=120)
             if resp.status_code == 200 and b"%PDF" in resp.content[:100]:
@@ -297,21 +376,28 @@ async def hybrid_scrape(url, proxy=None):
             log.warning("  PDF fallback failed: %s", e)
         return None, "all_pdf_tiers_failed"
 
-    # HTML: Crawl4AI → curl_cffi+BS4 → Playwright
+    # HTML: Crawl4AI → Playwright (if JS-heavy) → curl_cffi+BS4
     text, source = await fetch_crawl4ai(url)
     if text:
-        _cache_save(url, text, source)
-        return text, source
-
-    text = await _run_in_thread(fetch_curl_cffi_html, url, proxy=proxy)
-    if text:
-        _cache_save(url, text, "curl_cffi_html")
-        return text, "curl_cffi_html"
+        if _has_js_garbage(text):
+            log.info("  Crawl4AI returned JS shell — trying Playwright")
+            text = await _run_in_thread(fetch_playwright, url)
+            if text:
+                _cache_save(url, text, "playwright")
+                return text, "playwright"
+        else:
+            _cache_save(url, text, source)
+            return text, source
 
     text = await _run_in_thread(fetch_playwright, url)
     if text:
         _cache_save(url, text, "playwright")
         return text, "playwright"
+
+    text = await _run_in_thread(fetch_curl_cffi_html, url, proxy=proxy)
+    if text:
+        _cache_save(url, text, "curl_cffi_html")
+        return text, "curl_cffi_html"
 
     return None, "all_html_tiers_failed"
 

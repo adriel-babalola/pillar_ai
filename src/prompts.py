@@ -5,17 +5,20 @@ Extraction prompts and indicator definitions for RDTII Pillars 6 & 7.
 PILLAR_6_INDICATORS = {
     "6.1": {
         "name": "Ban and local processing requirements",
-        "question": "Does this law impose a ban on cross-border data transfer and/or require local processing?",
+        "question": "Does this law restrict cross-border data transfers or require local processing?",
         "keywords": [
             "prohibit", "must not transfer", "local processing",
             "cross-border", "transfer personal data", "shall not transfer",
             "outside", "overseas transfer",
         ],
         "extraction_instructions": (
-            "Look for provisions that: (1) Prohibit or restrict the transfer of "
-            "personal data to other countries; (2) Require that personal data be "
-            "processed or stored locally. Distinguish between a total ban (score 1) "
-            "and a conditional regime (score 0.5)."
+            "Identify ANY provision that restricts, limits, or sets conditions on "
+            "cross-border data transfers. This includes: (1) Total prohibitions; "
+            "(2) Conditional restrictions (e.g. 'an organisation must not transfer "
+            "personal data outside Singapore except in accordance with prescribed "
+            "requirements'); (3) Local processing or storage requirements. "
+            "Even if the restriction is conditional rather than absolute, it is "
+            "still a relevant restriction — extract it as the operative clause."
         ),
     },
     "6.2": {
@@ -172,7 +175,7 @@ Your task is to answer the following RDTII (Regional Digital Trade Integration I
 
 Carefully read the full legal text below. Extract the following fields in **valid JSON only**:
 
-- "operative_clause": The exact, verbatim provision(s) that answer the indicator question. Quote the text precisely. If multiple provisions are relevant, choose the most directly applicable one. If none exists, set to null.
+- "operative_clause": The exact, verbatim provision(s) that answer the indicator question. Quote the text precisely. If multiple provisions are relevant, choose the most directly applicable one. If none exists, set to null. Note: conditional/qualified restrictions (e.g. "must not transfer unless...") ARE operative clauses — they are not "null."
 - "section_reference": The specific section, article, or regulation number (e.g., "Section 26(1)", "Article 4", "Part III"). If none, set to null.
 - "act_title": The full official title of the legal instrument (e.g., "Personal Data Protection Act 2012"). Do NOT include section numbers here.
 - "coverage": "Cross-cutting" if the law applies to all sectors/organisations; otherwise "Sectoral" followed by the specific sector (e.g., "Sectoral: Financial").
@@ -181,7 +184,7 @@ Carefully read the full legal text below. Extract the following fields in **vali
 
 Important rules:
 1. The operative clause MUST be verbatim — copy the exact wording from the text.
-2. If the document does NOT contain any relevant provision, return: {{"operative_clause": null, "section_reference": null, "act_title": null, "coverage": null, "timeframe": null, "interpretation": null}}
+2. Even partial restrictions, conditional regimes, or qualified prohibitions ARE relevant — extract them. Only return null if the text is completely silent on the topic.
 3. Return ONLY the JSON object, no other text, no markdown fences.
 
 --- BEGIN LEGAL TEXT ---

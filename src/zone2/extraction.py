@@ -36,7 +36,7 @@ async def prefilter_candidate(model, indicator_id, indicator_data, candidate):
 
     # Try up to 3 times with empty-response retries
     for _ in range(3):
-        result = await llm_call(model, system, prompt, max_tokens=200, retries=2)
+        result = await llm_call(model, system, prompt, max_tokens=512, retries=2)
         if result:
             parsed = parse_json_response(result)
             if parsed is not None:
@@ -80,8 +80,10 @@ async def extract_clauses(model, indicator_id, indicator_data, scraped_text):
 
     parsed = parse_json_response(result)
     if parsed is None:
+        log.warning("  JSON parse failed on LLM output")
         return None
     if parsed.get("operative_clause") is None:
+        log.warning("  LLM returned null operative_clause")
         return None
     return parsed
 

@@ -14,3 +14,11 @@ def relevance_score(text, keywords):
     lower = text.lower()
     matches = sum(1 for kw in keywords if kw.lower() in lower)
     return min(matches / len(keywords), 1.0)
+
+
+def generate_queries(indicator_data, country_display, site_filter):
+    full_queries = []
+    for theme in indicator_data["query_themes"]:
+        themed_q = theme.replace("[COUNTRY]", country_display)
+        full_queries.append(f"{site_filter} {themed_q} {country_display}")
+    return full_queries

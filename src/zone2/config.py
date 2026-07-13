@@ -10,12 +10,17 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 OPENROUTER_BASE = "https://openrouter.ai/api/v1"
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GEMINI_MODEL = "models/gemini-2.0-flash"
+GEMINI_MODEL = "models/gemini-2.5-flash"
 
-DEFAULT_MODEL = "poolside/laguna-xs.2:free"
-FALLBACK_MODEL = "gemini"
+OLLAMA_API_KEY = os.getenv("OLLAMA_API_KEY")
+OLLAMA_BASE = "https://ollama.com"
 
-MAX_TEXT_CHARS = 120000  # Gemini handles up to 1M tokens — increase for quality
+ALIBABA_API_KEY = os.getenv("DASHSCOPE_API_KEY")
+ALIBABA_BASE = "https://ws-qi5wh5fl237ivx9r.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1"
+
+DEFAULT_MODEL = "alibaba:qwen3.7-plus,gemini,ollama:gemma4"
+
+MAX_TEXT_CHARS = 220000  # Gemini handles up to 1M tokens — increase for quality
 
 PROXY_URL = os.getenv("PROXY_URL") or None
 

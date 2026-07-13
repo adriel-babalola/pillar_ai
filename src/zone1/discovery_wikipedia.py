@@ -15,6 +15,82 @@ from typing import Optional
 from src.zone1.config import COUNTRY_CONFIG
 from src.zone1.utils import is_official_url, relevance_score
 
+# ── Source classification helpers ──────────────────────────────────────────
+
+PRIMARY_KEYWORDS = [
+    "act", "regulation", "order", "code", "ordinance",
+    "rule", "decree", "directive", "legislation", "statute",
+]
+
+SECONDARY_KEYWORDS = [
+    "guideline", "advisory", "notice", "guide", "handbook",
+    "press release", "factsheet", "circular", "policy statement",
+    "code of practice", "standard", "framework",
+]
+
+
+def _classify_source_type(title: str, snippet: str = "") -> str:
+    text = (title + " " + snippet).lower()
+    for kw in PRIMARY_KEYWORDS:
+        if kw in text:
+            return "primary"
+    for kw in SECONDARY_KEYWORDS:
+        if kw in text:
+            return "secondary"
+    return "primary"  # default primary for gov URLs
+
+
+def _extract_citation(title: str, url: str) -> str:
+    text = title.lower()
+    m = re.search(r"act\s+(\d+)\s+of\s+(\d{4})", text, re.I)
+    if m:
+        return f"Act {m.group(1)} of {m.group(2)}"
+    m = re.search(r"regulation\s+(\d+)", text, re.I)
+    if m:
+        return f"Regulation {m.group(1)}"
+    m = re.search(r"no\.?\s*(\d+)\s+of\s+(\d{4})", text, re.I)
+    if m:
+        return f"No. {m.group(1)} of {m.group(2)}"
+    return ""
+
+
+def _check_url_status(url: str, timeout: int = 8) -> dict:
+    result = {"live": True, "status": "Pending"}
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0 (compatible; PillarAI/1.0)"},
+        )
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            code = resp.getcode()
+            result["live"] = 200 <= code < 400
+            if not result["live"]:
+                return result
+            try:
+                chunk = resp.read(8000).decode("utf-8", errors="replace").lower()
+            except Exception:
+                chunk = ""
+            if "repealed" in chunk:
+                result["status"] = "Repealed"
+            elif "not in force" in chunk or "not yet in force" in chunk:
+                result["status"] = "Not in force"
+            elif "commencement" in chunk or "in force" in chunk or "come into force" in chunk:
+                result["status"] = "In force"
+            elif "amendment" in chunk or "amended" in chunk:
+                result["status"] = "Amended"
+            elif result["live"]:
+                result["status"] = "In force"
+        return result
+    except urllib.error.HTTPError as e:
+        # Known anti-bot portals that serve content via PDF/JS
+        bot_blocked = any(d in url for d in ["sso.agc.gov.sg", "austlii.edu.au", "lom.agc.gov.my"])
+        if bot_blocked and 400 <= e.code < 500:
+            return {"live": True, "status": "In force"}
+        return {"live": e.code < 500, "status": f"HTTP {e.code}"}
+    except Exception:
+        return {"live": True, "status": "In force"}
+
+
 # ── Known Wikipedia page titles for each country × pillar × indicator ──────────
 # These are manually verified page titles that reliably exist and link to official
 # legislation.  Used as the primary discovery path before falling back to text search.
@@ -270,6 +346,12 @@ def discover_for_indicator(
             time.sleep(0.3)
         time.sleep(0.5)
 
+    # Enrich with URL status (HEAD check + text scan)
+    for c in candidates:
+        info = _check_url_status(c["url"])
+        c["live"] = info["live"]
+        c["status"] = info["status"]
+
     # Sort by relevance
     candidates.sort(key=lambda c: c.get("relevance_score", 0), reverse=True)
     return candidates
@@ -294,7 +376,13 @@ def _process_wiki_links(
             continue
 
         seen_urls.add(url)
-        score = relevance_score(f"{source_title} {url}", keywords)
+        if source_type == "curated":
+            score = 1.0
+        else:
+            score = relevance_score(f"{source_title} {url}", keywords)
+
+        src_type = _classify_source_type(source_title)
+        citation = _extract_citation(source_title, url)
 
         candidates.append({
             "indicator": indicator_id,
@@ -304,6 +392,9 @@ def _process_wiki_links(
             "query_used": f"wikipedia:{source_type}:{source_title}",
             "relevance_score": round(score, 3),
             "source": "discovery",
+            "source_type": src_type,
+            "citation": citation,
+            "status": "Pending",
         })
 
 

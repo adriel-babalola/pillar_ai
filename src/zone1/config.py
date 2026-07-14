@@ -33,7 +33,8 @@ COUNTRY_CONFIG = {
             r"oaic\.gov\.au",
             r"dfat\.gov\.au",
             r"acma\.gov\.au",
+            r"austlii\.edu\.au",
         ],
-        "site_filter": "site:.gov.au",
+        "site_filter": "site:.gov.au OR site:austlii.edu.au",
     },
 }

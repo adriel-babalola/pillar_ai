@@ -993,7 +993,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.1",
@@ -1002,7 +1006,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.1",
@@ -1011,7 +1019,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     }
   ],
   "6.2": [
@@ -1999,7 +2011,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.2",
@@ -2008,7 +2024,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.2",
@@ -2017,7 +2037,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     }
   ],
   "6.3": [
@@ -3025,7 +3049,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3034,7 +3062,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3043,7 +3075,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3052,7 +3088,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3061,7 +3101,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3070,7 +3114,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3079,7 +3127,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3088,7 +3140,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3097,7 +3153,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3106,7 +3166,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3115,7 +3179,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3124,7 +3192,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3133,7 +3205,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3142,7 +3218,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3151,7 +3231,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3160,7 +3244,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.3",
@@ -3169,7 +3257,11 @@
       "snippet": "From Wikipedia: Cyber Security Agency (curated)",
       "query_used": "wikipedia:curated:Cyber Security Agency",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     }
   ],
   "6.4": [
@@ -4166,7 +4258,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.4",
@@ -4175,7 +4271,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     },
     {
       "indicator": "6.4",
@@ -4184,7 +4284,11 @@
       "snippet": "From Wikipedia: Personal Data Protection Act 2012 (curated)",
       "query_used": "wikipedia:curated:Personal Data Protection Act 2012",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     }
   ],
   "6.5": [
@@ -5192,7 +5296,11 @@
       "snippet": "From Wikipedia: Digital Economy Partnership Agreement (curated)",
       "query_used": "wikipedia:curated:Digital Economy Partnership Agreement",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.5",
@@ -5201,7 +5309,11 @@
       "snippet": "From Wikipedia: Digital Economy Partnership Agreement (curated)",
       "query_used": "wikipedia:curated:Digital Economy Partnership Agreement",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "HTTP 404",
+      "live": true
     },
     {
       "indicator": "6.5",
@@ -5210,7 +5322,11 @@
       "snippet": "From Wikipedia: Digital Economy Partnership Agreement (curated)",
       "query_used": "wikipedia:curated:Digital Economy Partnership Agreement",
       "relevance_score": 1.0,
-      "source": "discovery"
+      "source": "discovery",
+      "source_type": "primary",
+      "citation": "",
+      "status": "In force",
+      "live": true
     }
   ]
 }

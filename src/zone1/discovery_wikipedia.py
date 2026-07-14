@@ -141,7 +141,10 @@ CURATED_TITLES = {
             "6.1": [
                 "Privacy Act 1988",
             ],
-            "6.2": [],
+            "6.2": [
+                "Privacy Act 1988",
+                "Australian Privacy Principles",
+            ],
             "6.3": [
                 "Security of Critical Infrastructure Act 2018",
             ],
@@ -177,11 +180,18 @@ CURATED_TITLES = {
         "6": {
             "6.1": [
                 "Ministry of Communications (Malaysia)",
+                "Credit Reporting Agencies Act 2010",
             ],
-            "6.2": [],
-            "6.3": [],
+            "6.2": [
+                "Credit Reporting Agencies Act 2010",
+                "Ministry of Digital (Malaysia)",
+            ],
+            "6.3": [
+                "Computer Crimes Act 1997",
+            ],
             "6.4": [
                 "Ministry of Communications (Malaysia)",
+                "Credit Reporting Agencies Act 2010",
             ],
             "6.5": [
                 "Comprehensive and Progressive Agreement for Trans-Pacific Partnership",
@@ -194,10 +204,17 @@ CURATED_TITLES = {
             ],
             "7.2": [
                 "Computer security",
+                "Computer Crimes Act 1997",
             ],
-            "7.3": [],
-            "7.4": [],
-            "7.5": [],
+            "7.3": [
+                "Credit Reporting Agencies Act 2010",
+            ],
+            "7.4": [
+                "Ministry of Digital (Malaysia)",
+            ],
+            "7.5": [
+                "Security Offences (Special Measures) Act 2012",
+            ],
         },
     },
 }

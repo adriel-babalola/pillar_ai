@@ -8,7 +8,8 @@ from src.zone1.config import COUNTRY_CONFIG
 from src.zone1.indicators import PILLAR_6_INDICATORS, PILLAR_7_INDICATORS
 from src.zone1.seeds import SEED_URLS
 from src.zone1.inventory import load_inventory, INVENTORY_CSV
-from src.zone1.discovery_wikipedia import search_indicator
+from src.zone1.discovery_wikipedia import search_indicator as search_wikipedia
+from src.zone1.discovery_searchengine import search_indicator as search_searchengine
 from src.zone1.utils import generate_queries
 
 
@@ -68,13 +69,22 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
             print(f"       Inventory: {inv_count} entry(ies) from legal inventory CSV")
 
         queries = generate_queries(ind_data, display_name, country_conf["site_filter"])
-        search_results = await search_indicator(
+        # Wikipedia discovery
+        search_results = await search_wikipedia(
             ind_id, queries, country_key, limit, cache,
             ind_data["keywords"], crawler, inventory_urls=inv_urls,
         )
-
         seen_urls = {r["url"] for r in results}
         for sr in search_results:
+            if sr["url"] not in seen_urls:
+                results.append(sr)
+                seen_urls.add(sr["url"])
+        # DuckDuckGo discovery (additional searches beyond Wikipedia)
+        ddg_results = await search_searchengine(
+            ind_id, queries, country_key, limit, cache,
+            ind_data["keywords"], crawler, inventory_urls=inv_urls,
+        )
+        for sr in ddg_results:
             if sr["url"] not in seen_urls:
                 results.append(sr)
                 seen_urls.add(sr["url"])
@@ -84,8 +94,10 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
         inv_mapped = len(inv_seeds.get(ind_id, []))
         inv_added = sum(1 for r in results if r.get("source") == "inventory")
         search_count = len(search_results)
+        ddg_count = len(ddg_results)
         print(f"       Total: {len(results)} candidate(s) "
-              f"({seed_count} seed + {inv_added} inv/{inv_mapped} mapped + {search_count} search)")
+              f"({seed_count} seed + {inv_added} inv/{inv_mapped} mapped + "
+              f"{search_count} wiki + {ddg_count} web)")
 
         if results:
             top = results[0]

@@ -41,6 +41,10 @@ def _extract_section_ref(row: dict) -> Optional[str]:
         r"(Article|Art\.)\s*([0-9]+(?:\([0-9]+\))?)",
         r"(Chapter|Ch\.)\s*([0-9]+)",
         r"(Part)\s+([IVXLCDM]+)",
+        r"(APP)\s+([0-9]+)",
+        r"(Clause|cl\.)\s*([0-9]+(?:[\.\d]+)?)",
+        r"(Regulation|Reg\.)\s*([0-9]+)",
+        r"(Seksyen|Perkara|Perenggan|Bahagian)\s+([0-9A-Za-z]+)",
     ]
     for prefix_pat, num_pat in [p if isinstance(p, tuple) else (p, p) for p in patterns]:
         m = re.search(prefix_pat, impact, re.IGNORECASE)
@@ -59,6 +63,7 @@ def _generate_section_patterns(section_ref: str) -> list[str]:
     if num:
         patterns.append(r"Section\s+" + re.escape(num))
         patterns.append(r"S\.\s*" + re.escape(num))
+        patterns.append(r"s\.\s*" + re.escape(num))
         patterns.append(r"\b" + re.escape(num) + r"\b")
         main_num = re.sub(r"\(.*\)", "", num)
         sub = re.search(r"\((\d+)\)", num)
@@ -71,7 +76,7 @@ def _generate_section_patterns(section_ref: str) -> list[str]:
 
 def _find_next_section(text: str, start: int) -> int:
     section_heads = re.finditer(
-        r"(?:^|\n)\s*(Section\s+\d+|S\.\s*\d+|Part\s+[IVXLCDM]+|Article\s+\d+)",
+        r"(?:^|\n)\s*(Section\s+\d+|S\.\s*\d+|s\.\s*\d+|Part\s+[IVXLCDM]+|Article\s+\d+|APP\s+\d+|Clause\s+\d+|Division\s+\d+|Schedule\s+\d+|Seksyen\s+\d+|Bahagian\s+\w+|Perkara\s+\d+)",
         text[start + 80:],
         re.IGNORECASE,
     )
@@ -106,7 +111,7 @@ def _get_claim_text(row: dict) -> str:
     impact = row.get("Impact_or_comments", "")
     text = impact.split("Interpretation:", 1)[0].strip() if "Interpretation:" in impact else impact
     # Strip leading section reference like "Section 26(1):" or "Section 26(1) - "
-    text = re.sub(r"^(Section\s+\S+|S\.\s*\S+|Article\s+\S+|Art\.\s*\S+)\s*[:\-–—]?\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"^(Section\s+\S+|S\.\s*\S+|s\.\s*\S+|Article\s+\S+|Art\.\s*\S+|APP\s+\d+|Clause\s+\S+|Seksyen\s+\S+|Perkara\s+\S+|Perenggan\s+\S+)\s*[:\-–—]?\s*", "", text, flags=re.IGNORECASE)
     return text
 
 

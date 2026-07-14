@@ -12,6 +12,7 @@ All async — integrates cleanly with the async extraction pipeline.
 import hashlib
 import io
 import json
+import re
 import time
 import random
 import asyncio
@@ -305,11 +306,19 @@ def _cache_save(url, text, source):
 
 def _has_js_garbage(text):
     """Detect if text is navigation chrome (JS shell) instead of real content."""
-    nav_indicators = ["my collections", "all collections", "as published", "acts supplement",
-                      "bills supplement", "subsidiary legislation", "revised editions",
-                      "faqs", "feedback", "my collection", "collection"]
-    content_indicators = ["part i", "part ii", "part iii", "part iv", "section 1.",
-                          "section 2.", "section 3.", "this act", "provision of this"]
+    nav_indicators = [
+        "my collections", "all collections", "as published", "acts supplement",
+        "bills supplement", "subsidiary legislation", "revised editions",
+        "faqs", "feedback", "my collection", "collection",
+        "federal constitution", "principal", "original", "updated", "repealed",
+        "translated", "reprint", "amendment ordinance", "lom.agc",
+        "total act views", "all rights reserved",
+    ]
+    content_indicators = [
+        "part i", "part ii", "part iii", "part iv", "section 1.",
+        "section 2.", "section 3.", "this act", "provision of this",
+        "short title", "interpretation", "commencement",
+    ]
     text_lower = text.lower()
     nav_score = sum(1 for ni in nav_indicators if ni in text_lower)
     content_score = sum(1 for ci in content_indicators if ci in text_lower)
@@ -325,20 +334,36 @@ _SSO_PDF_MAP = {
     "PDPA2012": "https://sso.agc.gov.sg/Acts-Supp/26-2012/Published/20211231?DocDate=20121203&ViewType=Pdf",
 }
 
+# Known Malaysia AGC PDF URLs for acts that cannot be scraped via HTML
+_MY_PDF_MAP = {
+    "Computer Misuse Act 1997": "https://lom.agc.gov.my/act-view.php?lang=EN&act=563",
+    "Security Offences (Special Measures) Act 2012": "https://lom.agc.gov.my/act-view.php?lang=EN&act=747",
+    "Personal Data Protection Act 2010": "https://www.pdp.gov.my/ppdpv1/wp-content/uploads/2024/07/UNDANG-UNDANG-MALAYSIA_AKTA_PERLINDUNGAN_DATA_PERIBADI_2010_709_MALAY_AND-ENG_V2022.pdf",
+}
+
 
 def _normalize_ssourl(url):
-    """SSO pages need ProvIds=WholeDoc&ViewType=Adv or known PDF URLs."""
-    if "sso.agc.gov.sg" not in url:
+    """Normalize government legislation URLs for better scraping."""
+
+    # Singapore SSO
+    if "sso.agc.gov.sg" in url:
+        for act_key, pdf_url in _SSO_PDF_MAP.items():
+            if f"Act/{act_key}" in url:
+                log.info("  Using known PDF URL for %s", act_key)
+                return pdf_url
+        if "sso.agc.gov.sg/Act/" in url and "ProvIds=" not in url and "ViewType=" not in url:
+            sep = "&" if "?" in url else "?"
+            return f"{url}{sep}ProvIds=WholeDoc&ViewType=Adv"
         return url
-    # Known Acts-Supp PDFs
-    for act_key, pdf_url in _SSO_PDF_MAP.items():
-        if f"Act/{act_key}" in url:
-            log.info("  Using known PDF URL for %s", act_key)
-            return pdf_url
-    # Otherwise try Advanced View params for JS rendering
-    if "sso.agc.gov.sg/Act/" in url and "ProvIds=" not in url and "ViewType=" not in url:
-        sep = "&" if "?" in url else "?"
-        return f"{url}{sep}ProvIds=WholeDoc&ViewType=Adv"
+
+    # Malaysia AGC – try the PDF viewer URL
+    if "lom.agc.gov.my" in url:
+        m = re.search(r"act=(\d+)", url)
+        if m and "lang=EN" not in url:
+            sep = "&" if "?" in url else "?"
+            url = f"{url}{sep}lang=EN"
+        return url
+
     return url
 
 

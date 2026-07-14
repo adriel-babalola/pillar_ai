@@ -37,7 +37,12 @@ async def main():
     )
     args = parser.parse_args()
 
-    output = args.output or args.input.replace(".csv", "_verified.csv")
+    import os
+    if args.output:
+        output = args.output
+    else:
+        basename = os.path.basename(args.input).replace(".csv", "_verified.csv")
+        output = f"outputs/zone3/{basename}"
 
     print(f"  Zone 3 — Blind Citation Verification")
     print(f"  Input:  {args.input}")

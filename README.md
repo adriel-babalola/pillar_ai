@@ -67,10 +67,23 @@ python -c "from src.zone4.scoring import score_indicator; print('OK:', score_ind
 
 ### Quick run (recommended)
 
-One command does everything — discovery, extraction, verification, scoring:
+Run **both** Pillars 6 and 7 for a country in one go:
+
+```bash
+python run.py --country sg    # Singapore, Pillars 6 + 7
+python run.py --country my    # Malaysia,  Pillars 6 + 7
+python run.py --country au    # Australia, Pillars 6 + 7
+```
+
+That runs all four zones (discovery → extraction → verification → scoring) for both pillars, with clear banner headers showing what's running.
+
+### Single pillar
+
+Run only Pillar 6 or 7 for a country:
 
 ```bash
 python run.py --country sg --pillar 6
+python run.py --country sg --pillar 7
 ```
 
 ### Single zone
@@ -78,11 +91,20 @@ python run.py --country sg --pillar 6
 Run only one stage at a time:
 
 ```bash
-python run.py --zone discovery --country sg --pillar 6
+# Discovery only (both pillars)
+python run.py --zone discovery --country sg
+
+# Extraction only (single pillar)
 python run.py --zone extraction --country sg --pillar 6
-python run.py --zone verify     --country sg --pillar 6
-python run.py --zone score      --country sg --pillar 6
+
+# Verify only
+python run.py --zone verify --country sg --pillar 6
+
+# Score only
+python run.py --zone score --country sg --pillar 6
 ```
+
+Note: `--zone` without `--pillar` runs the zone for **both** pillars.
 
 ### All 6 combinations at once
 
@@ -90,13 +112,13 @@ python run.py --zone score      --country sg --pillar 6
 python run.py --all
 ```
 
-This runs Singapore Pillar 6, Singapore Pillar 7, Malaysia Pillar 6, Malaysia Pillar 7, Australia Pillar 6, Australia Pillar 7 in sequence.
+This runs Singapore Pillar 6, Singapore Pillar 7, Malaysia Pillar 6, Malaysia Pillar 7, Australia Pillar 6, Australia Pillar 7 in sequence, with a summary at the end showing all output files.
 
 ### run.py flags
 
 ```
---country      Country: sg/singapore, my/malaysia, au/australia
---pillar       Pillar: 6 or 7
+--country      Country: sg/singapore, my/malaysia, au/australia (required unless --all)
+--pillar       Pillar: 6 or 7 (optional — defaults to both)
 --zone         Stage: discovery, extraction, verify, score, or all (default: all)
 --all          Process all 3 countries x 2 pillars
 --model        LLM model override (e.g. "google/gemini-2.5-flash")
@@ -173,7 +195,10 @@ Output: `outputs/zone3/zone2_{country}_pillar{pillar}_verified.csv`
 ### Zone 4 — Scoring: `src/zone4/scoring.py` (via `run.py --zone score`)
 
 ```bash
-# Score from verified CSV (preferred) or fallback to raw Zone 2 CSV
+# Score both pillars (runs from verified CSV, falls back to raw Zone 2 CSV)
+python run.py --zone score --country sg
+
+# Score single pillar
 python run.py --zone score --country sg --pillar 6
 ```
 
@@ -315,16 +340,19 @@ zone4/scoring.py
 ## Example workflow
 
 ```bash
-# 1. Full pipeline: Singapore Pillar 6
-python run.py --country sg --pillar 6
+# 1. Full pipeline: Singapore (both pillars)
+python run.py --country sg
 
-# 2. Check results
+# 2. Full pipeline: Malaysia Pillar 6 only
+python run.py --country my --pillar 6
+
+# 3. Check results
 Get-ChildItem outputs/ -Recurse
 
-# 3. View score
+# 4. View score
 Get-Content outputs/zone4/zone4_singapore_pillar6_score.txt
 
-# 4. Submit CSV — outputs/zone2/zone2_singapore_pillar6.csv
+# 5. Submit CSV — outputs/zone2/zone2_singapore_pillar6.csv
 # (or the verified version if you ran verification)
 ```
 

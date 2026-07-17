@@ -38,3 +38,19 @@ COUNTRY_CONFIG = {
         "site_filter": "site:.gov.au OR site:austlii.edu.au",
     },
 }
+
+COUNTRY_ALIASES = {
+    "sg": "singapore",
+    "sgp": "singapore",
+    "singapore": "singapore",
+    "my": "malaysia",
+    "mys": "malaysia",
+    "malaysia": "malaysia",
+    "au": "australia",
+    "aus": "australia",
+    "australia": "australia",
+}
+
+def resolve_country(raw: str) -> str:
+    """Resolve country alias to canonical key. Falls back to raw if unknown."""
+    return COUNTRY_ALIASES.get(raw.strip().lower(), raw.strip().lower())

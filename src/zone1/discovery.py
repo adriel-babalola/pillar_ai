@@ -46,6 +46,7 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
                 "query_used": "seed_url (curated)",
                 "relevance_score": 1.0,
                 "source": "seed",
+                "discovery_tag": "KNOWN",
             })
             print(f"       Seed: {seed['title'][:70]}")
 
@@ -61,6 +62,7 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
                     "query_used": "legal_inventory.csv",
                     "relevance_score": 1.0,
                     "source": "inventory",
+                    "discovery_tag": "KNOWN",
                     "coverage": inv_seed.get("coverage", ""),
                     "timeframe": inv_seed.get("timeframe", ""),
                 })

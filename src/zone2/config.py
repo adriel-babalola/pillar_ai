@@ -28,14 +28,44 @@ CACHE_DIR = Path(".scrape_cache")
 CACHE_DIR.mkdir(exist_ok=True)
 
 CSV_FIELDS = [
+    "Economy",
     "Pillar_ID",
     "Indicator_ID",
     "Act_and_or_practice",
+    "Law_Number_Ref",
+    "Last_Amended",
     "Coverage",
+    "Article_Section",
+    "Discovery_Tag",
+    "Location_Reference",
+    "Verbatim_Snippet",
+    "Mapping_Rationale",
     "Impact_or_comments",
     "Timeframe",
     "References",
+    "Confidence",
 ]
+
+COUNTRY_ALIASES = {
+    "sg": "singapore",
+    "sgp": "singapore",
+    "singapore": "singapore",
+    "my": "malaysia",
+    "mys": "malaysia",
+    "malaysia": "malaysia",
+    "au": "australia",
+    "aus": "australia",
+    "australia": "australia",
+}
+
+def resolve_country(raw: str) -> str:
+    return COUNTRY_ALIASES.get(raw.strip().lower(), raw.strip().lower())
+
+COUNTRY_DISPLAY = {
+    "singapore": "Singapore",
+    "malaysia": "Malaysia",
+    "australia": "Australia",
+}
 
 logging.basicConfig(
     level=logging.INFO,

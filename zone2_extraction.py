@@ -13,7 +13,7 @@ import json
 import os
 
 from src.prompts import PILLAR_6_INDICATORS, PILLAR_7_INDICATORS
-from src.zone2.config import CSV_FIELDS, OPENROUTER_API_KEY, DEFAULT_MODEL, log
+from src.zone2.config import CSV_FIELDS, OPENROUTER_API_KEY, DEFAULT_MODEL, resolve_country, COUNTRY_DISPLAY, log
 from src.zone2.extraction import process_indicator
 
 
@@ -26,7 +26,7 @@ async def main():
     )
     parser.add_argument("--input", help="Zone 1 JSON path (default: zone1_{country}_pillar{pillar}.json)")
     parser.add_argument("--output", help="Output CSV path (default: zone2_{country}_pillar{pillar}.csv)")
-    parser.add_argument("--country", default="singapore", choices=["singapore", "malaysia", "australia"])
+    parser.add_argument("--country", default="singapore", help="Country: singapore/sg, malaysia/my, australia/au")
     parser.add_argument("--pillar", required=True, choices=["6", "7"])
     parser.add_argument("--model", default=DEFAULT_MODEL, help=f"OpenRouter model ID (default: {DEFAULT_MODEL})")
     parser.add_argument("--max-candidates", type=int, default=5, help="Max candidates per indicator (default: 5)")
@@ -34,15 +34,16 @@ async def main():
     parser.add_argument("--limit", type=int, default=0, help="Process only N candidates per indicator (default: all)")
     args = parser.parse_args()
 
-    country = args.country
+    country = resolve_country(args.country)
     pillar = args.pillar
+    economy = COUNTRY_DISPLAY.get(country, country.capitalize())
     input_path = args.input or f"outputs/zone1/zone1_{country}_pillar{pillar}.json"
     output_path = args.output or f"outputs/zone2/zone2_{country}_pillar{pillar}.csv"
 
     indicators = INDICATOR_SETS[pillar]
     log.info("=" * 55)
     log.info("Zone 2 — Extraction & Mapping")
-    log.info("Country: %s  |  Pillar: %s  |  Indicators: %d", country.capitalize(), pillar, len(indicators))
+    log.info("Country: %s  |  Pillar: %s  |  Indicators: %d", economy, pillar, len(indicators))
     log.info("Model:   %s", args.model)
     log.info("Max candidates per indicator: %d", args.max_candidates)
     log.info("=" * 55)
@@ -78,6 +79,7 @@ async def main():
         rows, stats = await process_indicator(
             args.model, indicator_id, indicator_data,
             candidates, limit, args.rate_delay,
+            economy=economy, country_display=economy,
         )
         all_rows.extend(rows)
         totals["prefiltered"] += stats["prefiltered"]

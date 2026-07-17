@@ -8,12 +8,9 @@ Returns candidates in the same format as discovery_wikipedia.py.
 import logging
 import re
 import urllib.parse
-from typing import Optional
+from html.parser import HTMLParser
 
-try:
-    from ddgs import DDGS
-except ImportError:
-    from duckduckgo_search import DDGS
+import requests as std_requests
 
 from src.zone1.config import COUNTRY_CONFIG
 from src.zone1.utils import is_official_url, relevance_score
@@ -21,25 +18,77 @@ from src.zone1.discovery_wikipedia import _classify_source_type, _extract_citati
 
 log = logging.getLogger(__name__)
 
-DDGS_TIMEOUT = 20
-DDGS_MAX_RESULTS = 15
+
+DDG_TIMEOUT = 8
 
 
-def _search_ddg(query: str, limit: int = 10) -> list[dict]:
-    """Run a DuckDuckGo text search. Returns list of {title, url, snippet}."""
+def _ddg_url(raw: str) -> str:
+    """Extract the real URL from a DuckDuckGo redirect link."""
+    m = re.search(r"uddg=([^&]+)", raw)
+    if m:
+        return urllib.parse.unquote(m.group(1))
+    return raw
+
+
+class _DDGResultParser(HTMLParser):
+    """Minimal HTML parser for DuckDuckGo /html/ results."""
+
+    def __init__(self):
+        super().__init__()
+        self.results = []
+        self._in_result = False
+        self._reading_title = False
+        self._reading_snippet = False
+        self._current = {}
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        cls = attrs.get("class", "")
+        if tag == "a" and "result__a" in cls:
+            self._reading_title = True
+            self._current["url"] = _ddg_url(attrs.get("href", ""))
+        elif tag == "a" and "result__snippet" in cls:
+            self._reading_snippet = True
+        elif tag == "div" and "result__body" in cls:
+            self._in_result = True
+            self._current = {"title": "", "url": "", "snippet": ""}
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self._reading_title:
+            self._reading_title = False
+        if tag == "a" and self._reading_snippet:
+            self._reading_snippet = False
+        if tag == "div" and self._in_result:
+            self._in_result = False
+            if self._current.get("title") and self._current.get("url"):
+                self.results.append(self._current)
+
+    def handle_data(self, data):
+        stripped = data.strip()
+        if not stripped:
+            return
+        if self._reading_title and not self._reading_snippet:
+            self._current["title"] += " " + stripped
+        if self._reading_snippet:
+            self._current["snippet"] += " " + stripped
+
+
+def _search_ddg(query: str, limit: int = 5) -> list[dict]:
+    """Run a DuckDuckGo HTML search directly. Returns list of {title, url, snippet}."""
     try:
-        with DDGS(timeout=DDGS_TIMEOUT) as ddgs:
-            results = list(ddgs.text(query, max_results=max(limit, DDGS_MAX_RESULTS)))
-            out = []
-            for r in results:
-                title = (r.get("title") or "").strip()
-                url = (r.get("href") or "").strip()
-                snippet = (r.get("body") or "").strip()
-                if title and url:
-                    out.append({"title": title, "url": url, "snippet": snippet, "source": "duckduckgo"})
-            return out
-    except Exception as e:
-        log.warning("  DDG search failed for %r: %s", query[:80], e)
+        resp = std_requests.get(
+            "https://html.duckduckgo.com/html/",
+            params={"q": query},
+            headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            },
+            timeout=DDG_TIMEOUT,
+        )
+        resp.raise_for_status()
+        parser = _DDGResultParser()
+        parser.feed(resp.text)
+        return parser.results[:limit]
+    except Exception:
         return []
 
 
@@ -102,6 +151,7 @@ async def search_indicator(
                 "query_used": f"duckduckgo:{q[:80]}",
                 "relevance_score": round(score, 3),
                 "source": "discovery",
+                "discovery_tag": "NEW",
                 "source_type": src_type,
                 "citation": citation,
                 "status": "Pending",

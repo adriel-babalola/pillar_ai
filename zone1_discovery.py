@@ -10,7 +10,7 @@ import os
 from crawl4ai import AsyncWebCrawler
 from crawl4ai.async_configs import BrowserConfig
 
-from src.zone1.config import COUNTRY_CONFIG
+from src.zone1.config import COUNTRY_CONFIG, resolve_country
 from src.zone1.discovery import process_country_pillar
 
 
@@ -20,8 +20,7 @@ async def main():
     )
     parser.add_argument(
         "--country",
-        choices=["singapore", "malaysia", "australia"],
-        help="Country to process (default: all three)",
+        help="Country to process: singapore/sg, malaysia/my, australia/au (default: all three)",
     )
     parser.add_argument(
         "--pillar",
@@ -36,7 +35,7 @@ async def main():
     )
     args = parser.parse_args()
 
-    countries = [args.country] if args.country else list(COUNTRY_CONFIG.keys())
+    countries = [resolve_country(args.country)] if args.country else list(COUNTRY_CONFIG.keys())
     pillars = [args.pillar] if args.pillar else ["6", "7"]
 
     print("ZONE 1 DISCOVERY — Source Discovery for RDTII")

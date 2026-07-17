@@ -260,9 +260,59 @@ def fetch_playwright(url, timeout=60):
     return None
 
 
+# ── OCR fallback for scanned PDFs ────────────────────────────────────
+
+try:
+    import pytesseract
+    from pdf2image import convert_bytes
+    HAS_OCR = True
+except ImportError:
+    HAS_OCR = False
+
+try:
+    from PIL import Image
+    HAS_PIL = True
+except ImportError:
+    HAS_PIL = False
+
+
+def _ocr_page(image) -> str:
+    """OCR a single PIL Image with pytesseract."""
+    if not HAS_OCR or not HAS_PIL:
+        return ""
+    try:
+        return pytesseract.image_to_string(image, lang="eng")
+    except Exception as e:
+        log.warning("  OCR page failed: %s", e)
+        return ""
+
+
+def extract_pdf_ocr(content_bytes, max_pages=50):
+    """OCR a scanned PDF — converts pages to images then runs pytesseract."""
+    if not HAS_OCR:
+        log.warning("  OCR unavailable — install pytesseract + pdf2image for scanned PDF support")
+        return None
+    try:
+        images = convert_bytes(content_bytes, dpi=300, first_page=1, last_page=max_pages)
+        log.info("  OCR: converting %d pages at 300 DPI", len(images))
+        parts = []
+        for i, img in enumerate(images):
+            text = _ocr_page(img)
+            if text.strip():
+                parts.append(f"--- Page {i + 1} ---\n{text.strip()}")
+        full = "\n\n".join(parts)
+        log.info("  OCR: %d pages, %d chars", len(images), len(full))
+        return full if len(full) >= 50 else None
+    except Exception as e:
+        log.warning("  OCR extraction failed: %s", e)
+        return None
+
+
 # ── PDF ──────────────────────────────────────────────────────────────
 
 def extract_pdf_text(content_bytes):
+    """Extract text from a PDF — falls back to OCR if pdfplumber returns nothing."""
+    text = None
     try:
         doc = pdfplumber.open(io.BytesIO(content_bytes))
         total = len(doc.pages)
@@ -271,10 +321,17 @@ def extract_pdf_text(content_bytes):
         doc.close()
         text = "\n".join(parts)
         log.info("  PDF: %d pages, %d chars", pages_to_read, len(text))
-        return text
     except Exception as e:
-        log.warning("  PDF extraction failed: %s", e)
-        return None
+        log.warning("  pdfplumber failed: %s", e)
+
+    # If pdfplumber returned empty or too short, this is likely a scanned PDF → OCR
+    if not text or len(text.strip()) < 100:
+        log.info("  pdfplumber returned %d chars — trying OCR (scanned PDF fallback)", len(text or ""))
+        ocr_text = extract_pdf_ocr(content_bytes)
+        if ocr_text and len(ocr_text) >= 50:
+            return ocr_text
+
+    return text if text and len(text.strip()) >= 50 else None
 
 
 # ── Cache ──────────────────────────────────────────────────────────────

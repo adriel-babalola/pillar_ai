@@ -20,9 +20,11 @@ async def main():
         description="Zone 3 — Blind Citation Verification"
     )
     parser.add_argument(
-        "--input", required=True,
+        "--input", default=None,
         help="Path to Zone 2 CSV output (e.g., outputs/zone2/zone2_singapore_pillar6.csv)",
     )
+    parser.add_argument("--country", default=None, help="Country: sg/singapore, my/malaysia, au/australia")
+    parser.add_argument("--pillar", default=None, choices=["6", "7"], help="Pillar: 6 or 7")
     parser.add_argument(
         "--output",
         help="Path for verified CSV (default: inserts '_verified' before .csv)",
@@ -38,14 +40,29 @@ async def main():
     args = parser.parse_args()
 
     import os
+
+    # Resolve input — use --country/--pillar as fallback
+    input_path = args.input
+    if not input_path:
+        if args.country:
+            from src.zone2.config import resolve_country
+            country_key = resolve_country(args.country)
+        else:
+            print("Error: --input or --country/--pillar required")
+            return
+        input_path = f"outputs/zone2/zone2_{country_key}_pillar{args.pillar}.csv"
+        if not os.path.exists(input_path):
+            print(f"Error: {input_path} not found")
+            return
+
     if args.output:
         output = args.output
     else:
-        basename = os.path.basename(args.input).replace(".csv", "_verified.csv")
+        basename = os.path.basename(input_path).replace(".csv", "_verified.csv")
         output = f"outputs/zone3/{basename}"
 
     print(f"  Zone 3 — Blind Citation Verification")
-    print(f"  Input:  {args.input}")
+    print(f"  Input:  {input_path}")
     print(f"  Output: {output}")
     print(f"  Model:  {args.model}")
     print()

@@ -35,16 +35,28 @@ def _fuzzy_ratio(a: str, b: str) -> float:
 
 
 def _extract_section_ref(row: dict) -> Optional[str]:
+    # Try new Article_Section column first
+    article_section = row.get("Article_Section", "")
+    if article_section and article_section.strip():
+        return article_section.strip()
+
     impact = row.get("Impact_or_comments", "")
+    # Singapore-style: Section 26(1), S. 26, s. 26
+    # Australian-style: APP 8, s 8, clause 1.4, Part III, Division 2
+    # Malaysian-style: Seksyen 129, Perkara 5, Bahagian IV
     patterns = [
         r"(Section|S\.|§)\s*([0-9]+[A-Z]*(?:\([0-9]+\))?)",
         r"(Article|Art\.)\s*([0-9]+(?:\([0-9]+\))?)",
         r"(Chapter|Ch\.)\s*([0-9]+)",
         r"(Part)\s+([IVXLCDM]+)",
+        r"(Division)\s+([0-9]+)",
+        r"(Schedule)\s+([0-9]+)",
         r"(APP)\s+([0-9]+)",
         r"(Clause|cl\.)\s*([0-9]+(?:[\.\d]+)?)",
         r"(Regulation|Reg\.)\s*([0-9]+)",
         r"(Seksyen|Perkara|Perenggan|Bahagian)\s+([0-9A-Za-z]+)",
+        r"(s\.)\s*([0-9]+(?:\([0-9a-z]+\))?)",
+        r"\b([0-9]+)\.\s*Section\b",
     ]
     for prefix_pat, num_pat in [p if isinstance(p, tuple) else (p, p) for p in patterns]:
         m = re.search(prefix_pat, impact, re.IGNORECASE)
@@ -57,31 +69,62 @@ def _extract_section_ref(row: dict) -> Optional[str]:
 
 
 def _generate_section_patterns(section_ref: str) -> list[str]:
+    """Generate regex patterns for finding a section reference in a document.
+    
+    Covers Singapore (Section 26(1), S. 26), Australia (APP 8, s 8, Clause 1.4, 
+    Part IV, Division 2, Schedule 1), and Malaysia (Seksyen 129, Perkara 5) formats.
+    """
     ref = section_ref.strip()
     patterns = [re.escape(ref)]
+
+    # Also try the ref with flexibly grouped whitespace
+    patterns.append(re.sub(r"\s+", r"\\s+", re.escape(ref)))
+
+    num_part = re.sub(r"[^0-9()IVXLCDMivxlcdm]", "", ref)
+    alpha_part = re.sub(r"[^A-Za-z]", "", ref).lower()
     num = re.sub(r"[^0-9()]", "", ref)
+
     if num:
         patterns.append(r"Section\s+" + re.escape(num))
         patterns.append(r"S\.\s*" + re.escape(num))
         patterns.append(r"s\.\s*" + re.escape(num))
+        patterns.append(r"s\s+" + re.escape(num))
         patterns.append(r"\b" + re.escape(num) + r"\b")
+        # Australian gazette format: "26.  (1)"
         main_num = re.sub(r"\(.*\)", "", num)
         sub = re.search(r"\((\d+)\)", num)
         if main_num and sub:
             subsection = sub.group(1)
+            patterns.append(r"\b" + re.escape(main_num) + r"\s*\.\s*\(" + re.escape(subsection) + r"\)")
+            patterns.append(r"\b" + re.escape(main_num) + r"\s*\.\s*\S?\s*\(" + re.escape(subsection) + r"\)")
             patterns.append(r"\b" + re.escape(main_num) + r"\." + r"\s*\S?\s*\(" + re.escape(subsection) + r"\)")
             patterns.append(r"\b" + re.escape(main_num) + r"\." + r"\s*\(" + re.escape(subsection) + r"\)")
+
+    # Handle "APP 8" or "APP 8" → look for "Australian Privacy Principle 8" or "APP 8"
+    if "app" in alpha_part:
+        num_only = re.sub(r"[^0-9]", "", ref)
+        if num_only:
+            patterns.append(r"APP\s+" + re.escape(num_only))
+            patterns.append(r"Australian\s+Privacy\s+Principle\s+" + re.escape(num_only))
+
+    # Handle "Part IV" → look for "PART 4", "Part Four", "Part IV"
+    if "part" in alpha_part:
+        roman = re.sub(r"[^IVXLCDMivxlcdm]", "", ref).upper()
+        if roman:
+            patterns.append(r"Part\s+" + re.escape(roman))
+            patterns.append(r"PART\s+" + re.escape(roman))
+
     return patterns
 
 
 def _find_next_section(text: str, start: int) -> int:
     section_heads = re.finditer(
-        r"(?:^|\n)\s*(Section\s+\d+|S\.\s*\d+|s\.\s*\d+|Part\s+[IVXLCDM]+|Article\s+\d+|APP\s+\d+|Clause\s+\d+|Division\s+\d+|Schedule\s+\d+|Seksyen\s+\d+|Bahagian\s+\w+|Perkara\s+\d+)",
-        text[start + 80:],
+        r"(?:^|\n)\s*(Section\s+\d+|S\.\s*\d+|s\.\s*\d+|s\s+\d+|Part\s+[IVXLCDM\d]+|Article\s+\d+|APP\s+\d+|Clause\s+\d+|Division\s+\d+|Schedule\s+\d+|Seksyen\s+\d+|Bahagian\s+\w+|Perkara\s+\d+|Chapter\s+\d+)",
+        text[start + 120:],
         re.IGNORECASE,
     )
     for m in section_heads:
-        return start + 80 + m.start()
+        return start + 120 + m.start()
     return len(text)
 
 
@@ -134,7 +177,7 @@ async def _llm_locate_section(document: str, section_ref: str, model: str, api_k
     prompt = (
         f"You are a legal document parser. Find the exact text of {section_ref} "
         f"in the document below. Return ONLY the verbatim text of that section. "
-        f"If not found, return 'NOT_FOUND'.\n\n---\n{document[:12000]}"
+        f"If not found, return 'NOT_FOUND'.\n\n---\n{document[:40000]}"
     )
     try:
         client = AsyncOpenAI(base_url=base_url, api_key=api_key)
@@ -163,8 +206,14 @@ async def verify_row(
     retries: int = 3,
 ) -> dict:
     url = (row.get("References") or "").strip()
+    # Also try Source_URL column (hackathon spec name)
+    if not url:
+        url = (row.get("Source_URL") or "").strip()
     section_ref = _extract_section_ref(row)
-    claimed_text = _get_claim_text(row)
+    # Try Verbatim_Snippet column first, then fall back to Impact_or_comments
+    claimed_text = (row.get("Verbatim_Snippet") or "").strip()
+    if not claimed_text:
+        claimed_text = _get_claim_text(row)
 
     row["Verification_Status"] = "NEEDS_REVIEW"
     row["Verification_Actual_Text"] = ""

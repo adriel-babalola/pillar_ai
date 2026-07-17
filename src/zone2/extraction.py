@@ -59,12 +59,13 @@ async def scrape_url(url):
     return text
 
 
-async def extract_clauses(model, indicator_id, indicator_data, scraped_text):
+async def extract_clauses(model, indicator_id, indicator_data, scraped_text, country_display="Singapore"):
     """Send scraped text to LLM and extract structured information."""
     prompt = EXTRACTION_PROMPT_TEMPLATE.format(
         indicator_id=indicator_id,
         indicator_question=indicator_data["question"],
         extraction_instructions=indicator_data["extraction_instructions"],
+        country_display=country_display,
         scraped_text=truncate_text(scraped_text),
     )
 
@@ -88,14 +89,19 @@ async def extract_clauses(model, indicator_id, indicator_data, scraped_text):
     return parsed
 
 
-def build_row(indicator_id, url, candidate_title, extracted):
-    """Map LLM extraction output to CSV columns."""
+def build_row(indicator_id, url, candidate_title, extracted, economy="", discovery_tag="NEW"):
+    """Map LLM extraction output to CSV columns — hackathon-ready."""
     act_title = extracted.get("act_title") or candidate_title or ""
     coverage = extracted.get("coverage") or "Unknown"
     section = extracted.get("section_reference", "") or ""
     op_clause = extracted.get("operative_clause", "")
     interpretation = extracted.get("interpretation", "") or ""
+    law_number = extracted.get("law_number_ref") or ""
+    last_amended = extracted.get("last_amended") or ""
+    location_ref = extracted.get("location_reference") or ""
+    confidence = extracted.get("confidence") or ""
 
+    # Keep Impact_or_comments as combined field for backward compat
     impact = op_clause
     if section:
         impact = f"{section}: {impact}"
@@ -105,13 +111,22 @@ def build_row(indicator_id, url, candidate_title, extracted):
     pillar_id = indicator_id.split(".")[0]
 
     return {
+        "Economy": economy,
         "Pillar_ID": pillar_id,
         "Indicator_ID": indicator_id,
         "Act_and_or_practice": act_title,
+        "Law_Number_Ref": law_number,
+        "Last_Amended": last_amended,
         "Coverage": coverage,
+        "Article_Section": section,
+        "Discovery_Tag": discovery_tag,
+        "Location_Reference": location_ref,
+        "Verbatim_Snippet": op_clause,
+        "Mapping_Rationale": interpretation,
         "Impact_or_comments": impact,
         "Timeframe": extracted.get("timeframe", ""),
         "References": url,
+        "Confidence": confidence,
     }
 
 
@@ -171,6 +186,7 @@ def _rank_candidates(candidates):
 async def process_indicator(
     model, indicator_id, indicator_data,
     candidates, max_candidates, rate_delay,
+    economy="", country_display="Singapore",
 ):
     """Process all candidates for one indicator and return (rows, stats)."""
     log.info("  [%s] %s", indicator_id, indicator_data["name"])
@@ -207,6 +223,7 @@ async def process_indicator(
 
         extracted = await extract_clauses(
             model, indicator_id, indicator_data, scraped,
+            country_display=country_display,
         )
         if not extracted:
             log.info("      Extraction: no relevant clause found")
@@ -217,7 +234,9 @@ async def process_indicator(
         ref = extracted.get("section_reference") or "?"
         log.info("      Extracted: %s — %s", ref, extracted.get("act_title", "?")[:60])
 
-        row = build_row(indicator_id, url, cand.get("title", ""), extracted)
+        discovery_tag = cand.get("discovery_tag", "NEW")
+        row = build_row(indicator_id, url, cand.get("title", ""), extracted,
+                       economy=economy, discovery_tag=discovery_tag)
         rows.append(row)
 
         await asyncio.sleep(rate_delay)

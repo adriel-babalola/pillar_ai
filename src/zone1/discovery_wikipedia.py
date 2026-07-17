@@ -409,6 +409,7 @@ def _process_wiki_links(
             "query_used": f"wikipedia:{source_type}:{source_title}",
             "relevance_score": round(score, 3),
             "source": "discovery",
+            "discovery_tag": "NEW",
             "source_type": src_type,
             "citation": citation,
             "status": "Pending",

@@ -165,7 +165,7 @@ or
 
 Confidence levels: "high" (clearly relevant), "medium" (possibly relevant), "low" (unlikely relevant)."""
 
-EXTRACTION_PROMPT_TEMPLATE = """You are an expert legal researcher specialising in digital trade and data protection law. You are analysing a legal document from Singapore.
+EXTRACTION_PROMPT_TEMPLATE = """You are an expert legal researcher specialising in digital trade and data protection law. You are analysing a legal document from the {country_display}.
 
 Your task is to answer the following RDTII (Regional Digital Trade Integration Index) indicator question:
 
@@ -178,8 +178,11 @@ Carefully read the full legal text below. Extract the following fields in **vali
 - "operative_clause": The exact, verbatim provision(s) that answer the indicator question. Quote the text precisely. If multiple provisions are relevant, choose the most directly applicable one. If none exists, set to null. Note: conditional/qualified restrictions (e.g. "must not transfer unless...") ARE operative clauses — they are not "null."
 - "section_reference": The specific section, article, or regulation number (e.g., "Section 26(1)", "Article 4", "Part III"). If none, set to null.
 - "act_title": The full official title of the legal instrument (e.g., "Personal Data Protection Act 2012"). Do NOT include section numbers here.
+- "law_number_ref": The official law number (e.g., "Act 26 of 2012", "Act 709", "No. 119 of 1988"). If none, set to null.
 - "coverage": "Cross-cutting" if the law applies to all sectors/organisations; otherwise "Sectoral" followed by the specific sector (e.g., "Sectoral: Financial").
 - "timeframe": The date the law came into force and, if amended, the latest amendment date. Format: "Since Month Year; Last amended Month Year". If the dates are not in the text, set to "Not specified in text".
+- "last_amended": The year of the most recent amendment (e.g., "2021", "2023"). If none, set to null.
+- "location_reference": Where in the document this was found, such as a PDF page number (e.g., "p. 14") or an HTML anchor/section path. If unknown, set to null.
 - "interpretation": A concise legal interpretation (2-3 sentences) explaining why this provision matches the indicator. Include the policy effect (e.g., "This is a conditional flow regime requiring comparable protection, not a total ban.").
 
 Important rules:

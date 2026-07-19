@@ -57,13 +57,9 @@ def banner(title: str):
     log.info("")
 
 
-def step(msg: str):
-    log.info(">>> %s", msg)
-
-
 def run(cmd: list[str], desc: str) -> bool:
-    step("Starting: %s", desc)
-    step("Command:  %s", " ".join(cmd))
+    log.info(">>> Starting: %s", desc)
+    log.info(">>> Command:  %s", " ".join(cmd))
     t0 = time.time()
     result = subprocess.run(cmd)
     elapsed = time.time() - t0
@@ -126,7 +122,7 @@ async def run_score(country: str, pillar: str) -> bool:
         log.error("!!! No CSV found at %s or %s — run extraction first", verified, raw)
         return False
 
-    step("Scoring %s Pillar %s from: %s", economy, pillar, csv_path)
+    log.info(">>> Scoring %s Pillar %s from: %s", economy, pillar, csv_path)
     with open(csv_path, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
@@ -170,28 +166,30 @@ async def process_one(
     display = COUNTRY_DISPLAY.get(country_key, country_key.capitalize())
     banner(f"{display} — Pillar {pillar}")
 
-    if "discovery" in zones:
+    run_all = "all" in zones
+
+    if run_all or "discovery" in zones:
         banner(f"ZONE 1: Discovery — {display} Pillar {pillar}")
         ok = await run_discovery(country_key, pillar, limit if limit else 10)
         if not ok:
             return
         log.info("Done Zone 1 — %s Pillar %s", display, pillar)
 
-    if "extraction" in zones:
+    if run_all or "extraction" in zones:
         banner(f"ZONE 2: Extraction — {display} Pillar {pillar}")
         ok = await run_extraction(country_key, pillar, model, limit or 5, rate_delay)
         if not ok:
             return
         log.info("Done Zone 2 — %s Pillar %s", display, pillar)
 
-    if "verify" in zones:
+    if run_all or "verify" in zones:
         banner(f"ZONE 3: Verification — {display} Pillar {pillar}")
         ok = await run_verify(country_key, pillar, model)
         if not ok:
             return
         log.info("Done Zone 3 — %s Pillar %s", display, pillar)
 
-    if "score" in zones:
+    if run_all or "score" in zones:
         banner(f"ZONE 4: Scoring — {display} Pillar {pillar}")
         await run_score(country_key, pillar)
         log.info("Done Zone 4 — %s Pillar %s", display, pillar)

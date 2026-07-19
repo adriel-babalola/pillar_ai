@@ -30,12 +30,19 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
     all_candidates = {}
     cache = {}
     seeds = SEED_URLS.get(country_key, {})
+    global_seen_urls = set()
 
     for ind_id in sorted(pillar_data.keys()):
         ind_data = pillar_data[ind_id]
+        if ind_data.get("auto_skip"):
+            print(f"\n  [{ind_id}] {ind_data['name']} — SKIP (non-regulatory indicator)")
+            all_candidates[ind_id] = []
+            continue
+
         print(f"\n  [{ind_id}] {ind_data['name']}")
 
         results = []
+        dedup_urls = set()
 
         for seed in seeds.get(ind_id, []):
             results.append({
@@ -48,12 +55,13 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
                 "source": "seed",
                 "discovery_tag": "KNOWN",
             })
+            dedup_urls.add(seed["url"])
             print(f"       Seed: {seed['title'][:70]}")
 
         inv_count = 0
         for inv_seed in inv_seeds.get(ind_id, []):
             url = inv_seed["url"]
-            if url not in {r["url"] for r in results}:
+            if url not in dedup_urls:
                 results.append({
                     "indicator": ind_id,
                     "title": inv_seed["title"],
@@ -66,32 +74,38 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
                     "coverage": inv_seed.get("coverage", ""),
                     "timeframe": inv_seed.get("timeframe", ""),
                 })
+                dedup_urls.add(url)
                 inv_count += 1
         if inv_count:
             print(f"       Inventory: {inv_count} entry(ies) from legal inventory CSV")
 
+        # Pass global_seen_urls + inv_urls to skip URLs already found by other indicators
+        all_known = global_seen_urls | inv_urls
         queries = generate_queries(ind_data, display_name, country_conf["site_filter"])
         # Wikipedia discovery
         search_results = await search_wikipedia(
             ind_id, queries, country_key, limit, cache,
-            ind_data["keywords"], crawler, inventory_urls=inv_urls,
+            ind_data["keywords"], crawler, inventory_urls=all_known,
         )
-        seen_urls = {r["url"] for r in results}
         for sr in search_results:
-            if sr["url"] not in seen_urls:
+            if sr["url"] not in dedup_urls:
                 results.append(sr)
-                seen_urls.add(sr["url"])
+                dedup_urls.add(sr["url"])
         # DuckDuckGo discovery (additional searches beyond Wikipedia)
         ddg_results = await search_searchengine(
             ind_id, queries, country_key, limit, cache,
-            ind_data["keywords"], crawler, inventory_urls=inv_urls,
+            ind_data["keywords"], crawler, inventory_urls=all_known,
         )
         for sr in ddg_results:
-            if sr["url"] not in seen_urls:
+            if sr["url"] not in dedup_urls:
                 results.append(sr)
-                seen_urls.add(sr["url"])
+                dedup_urls.add(sr["url"])
 
         all_candidates[ind_id] = results
+        # Track discovery-found URLs globally to avoid re-processing across indicators
+        for r in results:
+            if r.get("source") in ("discovery",):
+                global_seen_urls.add(r["url"])
         seed_count = len(seeds.get(ind_id, []))
         inv_mapped = len(inv_seeds.get(ind_id, []))
         inv_added = sum(1 for r in results if r.get("source") == "inventory")
@@ -105,19 +119,20 @@ async def process_country_pillar(country_key, pillar_id, limit, crawler):
             top = results[0]
             print(f"       Top: {top['title'][:70]}...")
 
-    # Filter noise: keep seeds always, drop score-0 discovery entries, prefer live+primary
+    # Filter noise: keep seeds always, drop low-relevance discovery entries, prefer live+primary
     for ind_id in all_candidates:
         filtered = []
         for c in all_candidates[ind_id]:
             if c.get("source") in ("seed", "inventory"):
                 filtered.append(c)
-            elif c.get("relevance_score", 0) > 0:
+            elif c.get("relevance_score", 0) >= 0.3:
                 if c.get("live", True):
+                    # Penalise secondary sources (guidelines, advisories over primary legislation)
+                    if c.get("source_type") == "secondary":
+                        c["relevance_score"] = max(c["relevance_score"] * 0.5, 0.1)
                     filtered.append(c)
                 else:
                     print(f"       [SKIP] Broken URL: {c.get('url','')[:60]}")
-            if c.get("source") == "discovery" and c.get("source_type") == "secondary":
-                c["relevance_score"] = max(c.get("relevance_score", 0) * 0.5, 0.1)
         all_candidates[ind_id] = filtered
 
     os.makedirs("outputs/zone1", exist_ok=True)

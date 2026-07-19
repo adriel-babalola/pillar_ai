@@ -7,6 +7,59 @@ from src.zone1.indicators import PILLAR_6_INDICATORS, PILLAR_7_INDICATORS
 INVENTORY_CSV = "Singapore, Malaysia, Australia, Legal Inventory.csv"
 
 
+RELEVANT_NAMES = {
+    "Cross-border data policies",
+    "Domestic data protection & privacy",
+}
+
+PILLARS_6_7_DESC_KEYWORDS = [
+    "data protect", "cyber", "privacy", "personal data",
+    "cross-border data", "data flow", "data localization",
+    "digital economy", "digital trade", "data retention",
+    "data breach", "surveillance", "government access",
+    "lawful access", "critical infrastructure", "computer misuse",
+    "data protection impact assessment",
+    "ban", "local processing", "local storage",
+    "infrastructure requirement", "conditional flow",
+    "binding commitment", "data transfer",
+]
+
+
+def _is_relevant_row(row: dict) -> bool:
+    """Check if an inventory row is relevant to Pillars 6/7."""
+    cluster = (row.get("cluster") or "").strip()
+    name = (row.get("name") or "").strip()
+    desc = (row.get("policy.description") or "").lower()
+    act = (row.get("Act.and.or.practice") or "").lower()
+
+    # Only Digital governance policies cluster
+    if cluster != "Digital governance policies":
+        return False
+
+    # Must be in a relevant name category
+    if name not in RELEVANT_NAMES:
+        return False
+
+    # Combined text must match Pillars 6/7 keywords
+    text = f"{act} {desc}"
+    if not any(w in text for w in PILLARS_6_7_DESC_KEYWORDS):
+        return False
+
+    # Act title must contain data/cyber/privacy/digital keywords (avoids Companies Act, Employment Act, etc.)
+    act_keywords = ["personal data act", "data protection", "cyber",
+                    "privacy", "digital economy", "digital partnership",
+                    "criminal procedure", "computer misuse",
+                    "advisory guideline", "guide to data",
+                    "telecommunications", "free trade agreement",
+                    "regional comprehensive", "asean"]
+    if any(w in act for w in act_keywords):
+        return True
+    if "pdpa" in act or "pdpc" in act:
+        return True
+
+    return False
+
+
 def load_inventory(csv_path, country_key, pillar_id):
     country_display = COUNTRY_CONFIG[country_key]["display"]
     inventory_seeds = {}
@@ -23,6 +76,8 @@ def load_inventory(csv_path, country_key, pillar_id):
             for row in reader:
                 country = (row.get("country") or "").strip().lower()
                 if country != country_key:
+                    continue
+                if not _is_relevant_row(row):
                     continue
                 existing_rows.append(row)
 

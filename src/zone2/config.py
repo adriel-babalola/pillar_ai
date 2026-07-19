@@ -20,7 +20,7 @@ ALIBABA_BASE = "https://ws-qi5wh5fl237ivx9r.ap-northeast-1.maas.aliyuncs.com/com
 
 DEFAULT_MODEL = "alibaba:qwen3.7-plus,gemini,ollama:gemma4"
 
-MAX_TEXT_CHARS = 220000  # Gemini handles up to 1M tokens — increase for quality
+MAX_TEXT_CHARS = 485000  # Gemini handles up to 1M tokens — increase for quality
 
 PROXY_URL = os.getenv("PROXY_URL") or None
 

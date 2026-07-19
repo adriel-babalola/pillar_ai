@@ -310,6 +310,7 @@ def discover_for_indicator(
     indicator_id: str,
     keywords: list[str],
     max_per_indicator: int = 20,
+    initial_seen_urls: set[str] | None = None,
 ) -> list[dict]:
     """
     Discover legal sources for one indicator using Wikipedia.
@@ -321,7 +322,7 @@ def discover_for_indicator(
       4. Filter for official government URLs.
       5. Score and deduplicate.
     """
-    seen_urls: set[str] = set()
+    seen_urls: set[str] = set(initial_seen_urls) if initial_seen_urls else set()
     wiki_pages_seen: set[str] = set()
     candidates: list[dict] = []
 
@@ -355,6 +356,10 @@ def discover_for_indicator(
             if p["title"] in wiki_pages_seen:
                 continue
             wiki_pages_seen.add(p["title"])
+            # Skip tangential pages with low relevance to indicator keywords
+            page_score = relevance_score(p["title"], keywords)
+            if page_score < 0.5:
+                continue
             links = get_external_links(p["title"])
             _process_wiki_links(
                 links, p["title"], keywords, display, indicator_id,
@@ -439,4 +444,5 @@ async def search_indicator(
         indicator_id=indicator_id,
         keywords=keywords,
         max_per_indicator=limit,
+        initial_seen_urls=inventory_urls,
     )

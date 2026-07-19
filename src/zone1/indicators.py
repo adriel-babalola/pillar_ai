@@ -60,6 +60,7 @@ PILLAR_6_INDICATORS = {
             "digital economy agreement [COUNTRY]",
             "free trade agreement data transfer",
         ],
+        "auto_skip": True,
     },
 }
 

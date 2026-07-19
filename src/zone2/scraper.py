@@ -389,6 +389,7 @@ def _has_js_garbage(text):
 
 _SSO_PDF_MAP = {
     "PDPA2012": "https://sso.agc.gov.sg/Acts-Supp/26-2012/Published/20211231?DocDate=20121203&ViewType=Pdf",
+    # NOTE: SSO now returns 403 for PDF downloads. CA2018 removed — fallback to Adv HTML view.
 }
 
 # Known Malaysia AGC PDF URLs for acts that cannot be scraped via HTML

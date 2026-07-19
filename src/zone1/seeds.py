@@ -26,9 +26,14 @@ SEED_URLS = {
                 "snippet": "An Act to require cybersecurity information sharing and to establish the Cybersecurity Agency of Singapore. Covers critical information infrastructure.",
             },
             {
-                "title": "IMDA Advisory Guidelines on Cloud Services and Data Centres",
-                "url": "https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2025/advisory-guidelines-of-cloud-services-and-data-centres",
-                "snippet": "Advisory guidelines on cloud services and data centre requirements in Singapore.",
+                "title": "IMDA Advisory Guidelines for Cloud Services (PDF)",
+                "url": "https://www.imda.gov.sg/-/media/imda/files/regulations-and-licensing/regulations/codes-of-practice/codes-of-practice-dco-and-csp/ag-for-resilience-and-security-of-cloud-services.pdf",
+                "snippet": "Advisory guidelines on resilience and security of cloud services in Singapore — CSPs encouraged to adopt measures including infrastructure security.",
+            },
+            {
+                "title": "IMDA Advisory Guidelines for Data Centres (PDF)",
+                "url": "https://www.imda.gov.sg/-/media/imda/files/regulations-and-licensing/regulations/codes-of-practice/codes-of-practice-dco-and-csp/ag-for-resilience-and-security-of-data-centres.pdf",
+                "snippet": "Advisory guidelines on resilience and security of data centres in Singapore — DC operators encouraged to adopt best practices.",
             },
         ],
         "6.4": [
@@ -50,9 +55,9 @@ SEED_URLS = {
                 "snippet": "Overview of Singapore's Digital Economy Agreements including DEPA, UK-SG DEA, and others covering cross-border data flows.",
             },
             {
-                "title": "CPTPP — Comprehensive and Progressive Agreement for Trans-Pacific Partnership",
-                "url": "https://www.mti.gov.sg/trade-international-economic-relations/agreements/free-trade-agreements/comprehensive-and-progressive-agreement-for-trans-pacific-partnership-cptpp",
-                "snippet": "CPTPP includes binding commitments on cross-border data transfers and data localization.",
+                "title": "CPTPP Chapter 14 — Electronic Commerce (via Canada)",
+                "url": "https://www.international.gc.ca/trade-commerce/trade-agreements-accords-commerciaux/agr-acc/tpp-ptp/text-texte/14.aspx?lang=eng",
+                "snippet": "CPTPP Chapter 14 (Electronic Commerce) — Articles 14.11 and 14.13 contain binding commitments on cross-border data transfers and prohibition of data localization.",
             },
         ],
         "7.1": [
@@ -76,9 +81,9 @@ SEED_URLS = {
         ],
         "7.3": [
             {
-                "title": "PDPC Advisory Guidelines on Data Retention",
-                "url": "https://www.pdpc.gov.sg/advisory-guidelines",
-                "snippet": "PDPC advisory guidelines covering data retention obligations under the PDPA.",
+                "title": "Personal Data Protection Act 2012 (PDPA) — Retention Limitation",
+                "url": "https://sso.agc.gov.sg/Act/PDPA2012",
+                "snippet": "The PDPA (Section 25) requires organisations to retain personal data only for as long as necessary, establishing a minimum retention standard.",
             },
         ],
         "7.4": [
@@ -208,16 +213,46 @@ SEED_URLS = {
         ],
         "6.2": [
             {
-                "title": "BNM — Data localization requirements for financial sector",
-                "url": "https://www.bnm.gov.my/documents/20124/132684/FSF+Implementation+Guide+on+Data+Localisation.pdf",
-                "snippet": "BNM requires financial institutions to store and process data locally.",
+                "title": "Personal Data Protection Act 2010 (Act 709) — bilingual PDF via PDP",
+                "url": "https://www.pdp.gov.my/ppdpv1/wp-content/uploads/2024/07/UNDANG-UNDANG-MALAYSIA_AKTA_PERLINDUNGAN_DATA_PERIBADI_2010_709_MALAY_AND-ENG_V2022.pdf",
+                "snippet": "The PDPA 2010 (Act 709) — full text. No explicit horizontal data localization requirement exists in the PDPA. Sectoral requirements are in BNM RMiT and other regulations.",
+            },
+            {
+                "title": "Rouse — Data Localisation and Transfer Issues in Southeast Asia: Malaysia",
+                "url": "https://rouse.com/insights/news/2025/data-localisation-and-transfer-issues-in-southeast-asia-what-businesses-need-to-know",
+                "snippet": "Malaysia enforces stricter data localisation conditions in financial services, telecommunications, and health under BNM and sectoral regulators.",
+            },
+            {
+                "title": "Captain Compliance — Malaysia Data Localization: Guidelines to Follow",
+                "url": "https://captaincompliance.com/education/malaysia-data-localization/",
+                "snippet": "BNM has transfer and localization requirements for the financial sector when entering into outsourcing arrangements.",
             },
         ],
         "6.3": [
             {
-                "title": "BNM — Outsourcing Policy Document",
-                "url": "https://www.bnm.gov.my/documents/20124/963937/Risk+Management+in+Outsourcing+Arrangements.pdf",
-                "snippet": "BNM policy documents require financial institutions to maintain computing infrastructure within Malaysia.",
+                "title": "MarketsNXT — Malaysia Data Centre Infrastructure Market (BNM RMiT requirements)",
+                "url": "https://marketsnxt.com/reports/country-reports/malaysia/malaysia-data-centre-infrastructure-market",
+                "snippet": "BNM RMiT policy requires Malaysian bank data to be stored in Malaysia-based data centres, creating sovereign data demand. PDPA 2024 amendments increase breach fines and mandate 72-hour reporting.",
+            },
+            {
+                "title": "Thales — Malaysia BNM RMiT Policy compliance overview",
+                "url": "https://cpl.thalesgroup.com/compliance/apac/malaysia-bnm-risk-management-in-technology-rmit-policy",
+                "snippet": "BNM RMiT policy covers governance, technology risk management, cybersecurity, technology operations, audit, and internal training for financial institutions. Latest version effective Nov 2025.",
+            },
+            {
+                "title": "Mondaq — Updated RMiT PD: Cloud Technology Risk Management for Financial Institutions",
+                "url": "https://www.mondaq.com/new-technology/1399776/updated-policy-document-on-risk-management-in-technology-rmit-additional-requirements-relating-to-management-of-cloud-technology-risks",
+                "snippet": "BNM RMiT policy document requires financial institutions to manage cloud technology risks, including infrastructure location and data security requirements.",
+            },
+            {
+                "title": "Readkong — Full text of BNM RMiT (original June 2020)",
+                "url": "https://www.readkong.com/page/risk-management-in-technology-rmit-bank-negara-4602189",
+                "snippet": "Near-verbatim full text of BNM RMiT policy document. Paragraph 10.49(c) requires FI to assess 'location of cloud infrastructure' as part of cloud risk assessment. Paragraph 10.24 requires critical systems hosted in dedicated production data centre space.",
+            },
+            {
+                "title": "LinkedIn — Malaysia's BNM Updates Its RMiT (June 2023)",
+                "url": "https://www.linkedin.com/pulse/malaysias-bnm-updates-its-rmit-ts-dr-suresh",
+                "snippet": "Verbatim text of updated RMiT 2023. Paragraph 15.1(c) triggers enhanced BNM scrutiny when 'data will be transmitted across borders'. Paragraph 10.50 requires key risk/control measures for critical systems on public cloud as per Appendix 10.",
             },
         ],
         "6.4": [
@@ -229,9 +264,9 @@ SEED_URLS = {
         ],
         "6.5": [
             {
-                "title": "World Bank — RCEP and CPTPP trade agreement texts (WTO database)",
-                "url": "https://wits.worldbank.org/GPTAD/PDF/archive/RCEP.pdf",
-                "snippet": "RCEP Chapter 12 covers electronic commerce including cross-border data transfer obligations.",
+                "title": "RCEP Chapter 12 — Electronic Commerce (via DFAT Australia)",
+                "url": "https://www.dfat.gov.au/sites/default/files/rcep-chapter-12.pdf",
+                "snippet": "RCEP Chapter 12 covers electronic commerce including cross-border data transfer obligations and prohibition of data localisation (Article 12.14, 12.15).",
             },
         ],
         "7.1": [
@@ -243,9 +278,14 @@ SEED_URLS = {
         ],
         "7.2": [
             {
-                "title": "Computer Misuse Act 1997 — via AGC Laws of Malaysia portal",
-                "url": "https://lom.agc.gov.my/act-detail.php?act=1997",
-                "snippet": "An Act to provide for offences relating to the misuse of computers and computer data.",
+                "title": "Computer Crimes Act 1997 (UNODC mirror) — full text PDF",
+                "url": "https://www.unodc.org/cld/uploads/res/document/mys/computer_crimes_act_html/2014_Act_563_-_Computer_Crimes_Act_1997.pdf",
+                "snippet": "Full text of Malaysia's Computer Crimes Act 1997 (Act 563) defining computer misuse offences including unauthorised access, modification, and wrongful communication.",
+            },
+            {
+                "title": "Computer Crimes Act 1997 (AGC direct PDF)",
+                "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act%20563.pdf",
+                "snippet": "Official AGC PDF reprint of Act 563 — Computer Crimes Act 1997. Covers unauthorised access, modification, and related computer offences.",
             },
         ],
         "7.3": [
@@ -254,6 +294,11 @@ SEED_URLS = {
                 "url": "https://www.pdp.gov.my/ppdpv1/wp-content/uploads/2024/07/UNDANG-UNDANG-MALAYSIA_AKTA_PERLINDUNGAN_DATA_PERIBADI_2010_709_MALAY_AND-ENG_V2022.pdf",
                 "snippet": "The PDPA (Section 10) requires that personal data be retained only for as long as necessary.",
             },
+            {
+                "title": "Personal Data Protection (Amendment) Act 2024 (Act A1727) — official PDF",
+                "url": "https://www.pdp.gov.my/ppdpv1/wp-content/uploads/2024/11/Act-A1727.pdf",
+                "snippet": "The 2024 Amendment Act introducing DPO requirements, data breach notification, data portability, and enhanced retention obligations.",
+            },
         ],
         "7.4": [
             {
@@ -261,12 +306,22 @@ SEED_URLS = {
                 "url": "https://www.pdp.gov.my/ppdpv1/wp-content/uploads/2024/07/UNDANG-UNDANG-MALAYSIA_AKTA_PERLINDUNGAN_DATA_PERIBADI_2010_709_MALAY_AND-ENG_V2022.pdf",
                 "snippet": "The PDPA (Part II, Division 2) requires data users to register with the Personal Data Protection Department.",
             },
+            {
+                "title": "Personal Data Protection (Amendment) Act 2024 (Act A1727) — official PDF",
+                "url": "https://www.pdp.gov.my/ppdpv1/wp-content/uploads/2024/11/Act-A1727.pdf",
+                "snippet": "The 2024 Amendment Act introduces mandatory appointment of Data Protection Officer (DPO) and Data Protection Impact Assessment (DPIA) requirements.",
+            },
         ],
         "7.5": [
             {
-                "title": "Security Offences (Special Measures) Act 2012 — via AGC",
-                "url": "https://lom.agc.gov.my/act-detail.php?act=2012",
-                "snippet": "Special measures for security offences including access to data and communications.",
+                "title": "Security Offences (Special Measures) Act 2012 (SOSMA) — via Vertic",
+                "url": "https://www.vertic.org/media/National%20Legislation/Malaysia/MY_Security_Offences_Act_2012.pdf",
+                "snippet": "Full text of Act 747 — provides for special measures including arrest, detention, communication interception, and government access to data.",
+            },
+            {
+                "title": "Security Offences (Special Measures) Act 2012 — Andy Reiter mirror",
+                "url": "https://andyreiter.com/wp-content/uploads/military-justice/my/Laws%20and%20Decrees/Malaysia%20-%202012%20-%20Security%20Offences%20%28Special%20Measures%29%20Act.pdf",
+                "snippet": "Full text of Act 747 — special measures for security offences including government access provisions.",
             },
         ],
     },

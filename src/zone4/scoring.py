@@ -52,11 +52,21 @@ def score_6_1(coverage: str, verbatim: str, interpretation: str) -> tuple[float,
     """
     cover_lower = coverage.lower()
     interp_lower = interpretation.lower()
-    combined = f"{cover_lower} {interp_lower}"
+    combined = f"{cover_lower} {interp_lower} {verbatim.lower()}"
 
     # Indicators of a total ban or broad restriction
     if any(w in combined for w in ["total ban", "absolute prohibition", "prohibits all"]):
         return 1.0, "Total ban on cross-border data transfer applies to all data"
+
+    # Check for conditional/exception language FIRST — "shall not transfer... except" is NOT a total ban
+    if (any(w in combined for w in ["except", "unless", "provided that", "subject to", "conditional"])
+        or "rather than a total prohibition" in combined
+        or "not a total ban" in combined
+        or "not a prohibition" in combined):
+        if any(w in combined for w in ["personal data", "personal information"]):
+            return 0.5, "Conditional restriction on cross-border data transfer (not a total ban): " + interpretation[:200]
+        return 0.5, "Conditional restriction on cross-border data transfer (not a total ban): " + interpretation[:200]
+
     if "horizontal" in cover_lower or "cross-cutting" in cover_lower or "all sectors" in combined:
         if "personal data" in verbatim.lower() or "personal data" in interp_lower:
             return 1.0, "Horizontal ban/processing requirement covering personal data"
@@ -170,28 +180,47 @@ def score_6_5(interpretation: str) -> tuple[float, str]:
     return 1.0, "No binding data transfer agreement identified (fallback - assuming no commitment)"
 
 
-def score_7_1(interpretation: str, verbatim: str) -> tuple[float, str]:
+def score_7_1(interpretation: str, verbatim: str, economy: str = "") -> tuple[float, str]:
     """
     Score 7.1 — Lack of comprehensive data protection framework.
     
     Score 1: Lacks data protection framework.
     Score 0.5: Sectoral framework exists.
     Score 0: Comprehensive framework exists.
+
+    Country-specific overrides:
+      - MY: PDPA only covers commercial transactions (excludes public sector)
+      - SG: PDPA excludes public agencies
     """
     combined = f"{interpretation.lower()} {verbatim.lower()}"
+    eco = economy.strip().lower()
 
-    if any(w in combined for w in [
-        "no data protection", "lack", "absence", "no comprehensive",
-        "no framework", "not exist", "does not have",
-    ]):
-        return 1.0, "Economy lacks a data protection framework"
+    # 1. Country-specific overrides: detect known scope limitations
+    if eco == "malaysia":
+        if "commercial transaction" in combined or "public sector" in combined or "commercial" in combined:
+            return 0.5, "Sectoral data protection framework exists (limited to commercial transactions, excludes government)"
+    if eco == "singapore":
+        if "public agency" in combined or "public sector" in combined:
+            return 0.5, "Sectoral data protection framework exists (excludes public agencies)"
+
+    # 2. Universal sectoral detection
     if "sectoral" in combined or "specific sector" in combined:
         return 0.5, "Sectoral data protection framework exists (not comprehensive)"
+
+    # 3. Comprehensive framework detected
     if any(w in combined for w in [
         "comprehensive", "personal data protection act", "data protection act",
         "privacy act", "cross-sectoral", "horizontal",
     ]):
         return 0.0, f"Comprehensive data protection framework exists: {interpretation[:200]}"
+
+    # 4. Fallback for no framework found
+    if any(w in combined for w in [
+        "no data protection", "lack", "absence", "no comprehensive",
+        "no framework", "not exist", "does not have",
+    ]):
+        return 1.0, "Economy lacks a data protection framework"
+
     return 0.0, "Comprehensive data protection framework assumed present"
 
 
@@ -209,6 +238,9 @@ def score_7_2(interpretation: str, verbatim: str) -> tuple[float, str]:
         return 1.0, "Economy lacks a cybersecurity framework"
     if any(w in combined for w in ["sectoral", "non-dedicated", "not dedicated", "relies on other laws"]):
         return 0.5, "Non-dedicated or sectoral cybersecurity framework exists"
+    # Computer misuse/criminal laws are NOT dedicated cybersecurity frameworks
+    if any(w in combined for w in ["computer misuse", "computer crime", "computer offences", "unauthorized access to computer"]):
+        return 0.5, "Computer misuse/criminal law exists but not a dedicated cybersecurity framework"
     if any(w in combined for w in [
         "cybersecurity act", "cyber security act", "cybersecurity law",
         "dedicated", "horizontal", "comprehensive", "all sectors",
@@ -322,6 +354,7 @@ def score_indicator(
     verbatim_snippet: str = "",
     mapping_rationale: str = "",
     impact_or_comments: str = "",
+    economy: str = "",
 ) -> dict:
     """
     Score a single RDTII indicator given extracted evidence.
@@ -332,6 +365,7 @@ def score_indicator(
         verbatim_snippet: The exact operative clause text
         mapping_rationale: The interpretation explaining why it maps
         impact_or_comments: Fallback combined field if individual fields are empty
+        economy: Country name for country-specific scoring overrides
     
     Returns dict with:
         indicator_id, score, rationale, weight, weighted_score
@@ -358,7 +392,9 @@ def score_indicator(
     # Some rubrics use only certain arguments
     if indicator_id in ("6.5",):
         score, rationale = rubric_fn(rationale)
-    elif indicator_id in ("7.1", "7.2", "7.3", "7.4", "7.5"):
+    elif indicator_id in ("7.1",):
+        score, rationale = rubric_fn(rationale, verbatim, economy)
+    elif indicator_id in ("7.2", "7.3", "7.4", "7.5"):
         score, rationale = rubric_fn(rationale, verbatim)
     else:
         score, rationale = rubric_fn(coverage, verbatim, rationale)
@@ -388,14 +424,24 @@ def score_all_indicators(rows: list[dict], pillar_id: str) -> list[dict]:
     weights = INDICATOR_WEIGHTS.get(pillar_id, {})
     results = []
 
+    # Determine economy from rows for country-specific messaging
+    economy_hint = ""
+    if rows:
+        economy_hint = rows[0].get("Economy", "").strip().lower()
+
     for ind_id in sorted(weights.keys()):
         # Find best row for this indicator (first non-empty, highest confidence)
         matching = [r for r in rows if r.get("Indicator_ID") == ind_id]
         if not matching:
+            rationale = "No evidence found for this indicator"
+            if ind_id == "6.5":
+                rationale = "Non-regulatory indicator — scored using external databases (automated extraction skipped)"
+            if ind_id == "6.3" and economy_hint == "malaysia":
+                rationale = "No evidence found (BNM RMiT primary source returns 403 — only secondary summaries available; LLM could not extract operative clause)"
             results.append({
                 "indicator_id": ind_id,
                 "score": 0.0,
-                "rationale": "No evidence found for this indicator",
+                "rationale": rationale,
                 "weight": weights[ind_id],
                 "weighted_score": 0.0,
             })
@@ -408,6 +454,7 @@ def score_all_indicators(rows: list[dict], pillar_id: str) -> list[dict]:
             verbatim_snippet=best.get("Verbatim_Snippet", ""),
             mapping_rationale=best.get("Mapping_Rationale", ""),
             impact_or_comments=best.get("Impact_or_comments", ""),
+            economy=best.get("Economy", ""),
         )
         results.append(result)
 

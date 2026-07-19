@@ -67,6 +67,10 @@ async def main():
 
     for indicator_id in sorted(indicators.keys()):
         indicator_data = indicators[indicator_id]
+        if indicator_data.get("auto_skip"):
+            log.info("  [%s] %s — SKIP (non-regulatory indicator)", indicator_id, indicator_data.get("name", ""))
+            continue
+
         candidates = candidates_by_indicator.get(indicator_id, [])
 
         if not candidates:

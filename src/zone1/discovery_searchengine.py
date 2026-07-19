@@ -100,9 +100,14 @@ def _generate_search_queries(
     """Build targeted search queries from indicator keywords + country."""
     display = COUNTRY_CONFIG[country_key]["display"]
     sf = COUNTRY_CONFIG[country_key]["site_filter"]
-    queries = [f"{sf} {k} {display}" for k in keywords[:3]]
-    queries.append(f"{sf} {indicator_id} {display} legislation")
-    return queries
+    # Main query: top 2 keywords combined with OR
+    if len(keywords) >= 2:
+        main = f"{sf} ({keywords[0]} OR {keywords[1]}) {display}"
+    else:
+        main = f"{sf} {keywords[0]} {display}"
+    # Backup query: indicator-specific fallback
+    backup = f"{sf} {indicator_id} {display} law"
+    return [main, backup]
 
 
 async def search_indicator(

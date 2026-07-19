@@ -1,9 +1,7 @@
 .env
-
-.env.example
-
 __pycache__/
 *.pyc
-outputs/
+
 .scrape_cache/
 .venv/
+_*.txt

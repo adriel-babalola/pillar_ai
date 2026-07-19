@@ -202,12 +202,17 @@ async def process_indicator(
         url = cand["url"]
         log.info("    URL: %s", url)
 
-        relevant = await prefilter_candidate(
-            model, indicator_id, indicator_data, cand,
-        )
-        if not relevant:
-            log.info("      Pre-filter: SKIP (not relevant)")
-            continue
+        # Skip LLM pre-filter for curated seed URLs — they're known-good
+        is_seed = cand.get("query_used") == "seed_url (curated)"
+        if is_seed:
+            log.info("      Seed URL — skipping pre-filter")
+        else:
+            relevant = await prefilter_candidate(
+                model, indicator_id, indicator_data, cand,
+            )
+            if not relevant:
+                log.info("      Pre-filter: SKIP (not relevant)")
+                continue
 
         stats["prefiltered"] += 1
         log.info("      Pre-filter: PASS")

@@ -73,6 +73,7 @@ PILLAR_6_INDICATORS = {
             "cross-border data flows, data localization, or digital trade. "
             "These are typically treaties or executive agreements, not domestic legislation."
         ),
+        "auto_skip": True,
     },
 }
 

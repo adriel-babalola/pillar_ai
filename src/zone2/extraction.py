@@ -6,7 +6,8 @@ import asyncio
 
 from src.zone2.config import CSV_FIELDS, MAX_TEXT_CHARS, log
 from src.zone2.client import llm_call, parse_json_response
-from src.zone2.scraper import hybrid_scrape
+from src.zone2.scraper import hybrid_scrape, _generate_alternate_urls, _is_low_quality_text
+from src.zone2.embedding import filter_candidates, deduplicate_candidates
 from src.prompts import PREFILTER_PROMPT, EXTRACTION_PROMPT_TEMPLATE
 
 
@@ -18,7 +19,6 @@ def truncate_text(text, max_chars=MAX_TEXT_CHARS):
 
 
 async def prefilter_candidate(model, indicator_id, indicator_data, candidate):
-    """Use LLM to check if a candidate URL is worth scraping."""
     title = candidate.get("title", "")
     snippet = candidate.get("snippet", "")
 
@@ -34,7 +34,6 @@ async def prefilter_candidate(model, indicator_id, indicator_data, candidate):
         "Always respond with valid JSON and nothing else."
     )
 
-    # Try up to 3 times with empty-response retries
     for _ in range(3):
         result = await llm_call(model, system, prompt, max_tokens=512, retries=2)
         if result:
@@ -49,18 +48,29 @@ async def prefilter_candidate(model, indicator_id, indicator_data, candidate):
 
 
 async def scrape_url(url):
-    """Scrape a URL using the hybrid 3-tier async scraper."""
+    """Scrape a URL using the hybrid async scraper.
+
+    Falls back to alternate URLs if the initial scrape fails
+    or returns low-quality content.
+    """
     log.info("  Scraping: %s", url)
     text, source = await hybrid_scrape(url)
-    if not text or len(text) < 200:
-        log.warning("  Too short (%d chars, source=%s) — skipping", len(text) if text else 0, source)
-        return None
-    log.info("  Result: %d chars via %s", len(text), source)
-    return text
+    if text and len(text) >= 200:
+        log.info("  Result: %d chars via %s", len(text), source)
+        return text
+
+    log.warning("  Too short (%d chars, source=%s) — trying alternate URLs", len(text) if text else 0, source)
+    for alt_url in _generate_alternate_urls(url):
+        log.info("  Alternate: %s", alt_url)
+        text2, source2 = await hybrid_scrape(alt_url)
+        if text2 and len(text2) >= 200:
+            log.info("  Alternate result: %d chars via %s", len(text2), source2)
+            return text2
+
+    return None
 
 
 async def extract_clauses(model, indicator_id, indicator_data, scraped_text, country_display="Singapore"):
-    """Send scraped text to LLM and extract structured information."""
     prompt = EXTRACTION_PROMPT_TEMPLATE.format(
         indicator_id=indicator_id,
         indicator_question=indicator_data["question"],
@@ -90,7 +100,6 @@ async def extract_clauses(model, indicator_id, indicator_data, scraped_text, cou
 
 
 def build_row(indicator_id, url, candidate_title, extracted, economy="", discovery_tag="NEW"):
-    """Map LLM extraction output to CSV columns — hackathon-ready."""
     act_title = extracted.get("act_title") or candidate_title or ""
     coverage = extracted.get("coverage") or "Unknown"
     section = extracted.get("section_reference", "") or ""
@@ -101,7 +110,6 @@ def build_row(indicator_id, url, candidate_title, extracted, economy="", discove
     location_ref = extracted.get("location_reference") or ""
     confidence = extracted.get("confidence") or ""
 
-    # Keep Impact_or_comments as combined field for backward compat
     impact = op_clause
     if section:
         impact = f"{section}: {impact}"
@@ -131,7 +139,6 @@ def build_row(indicator_id, url, candidate_title, extracted, economy="", discove
 
 
 def _rank_candidates(candidates):
-    """Re-rank candidates: promote legal document URLs, demote generic portals."""
     scored = []
     for c in candidates:
         url = c.get("url", "").lower()
@@ -142,6 +149,8 @@ def _rank_candidates(candidates):
 
         if c.get("query_used") == "seed_url (curated)":
             score += 999
+        elif "laws.sg/legislation/" in url:
+            score += 50
         elif "sso.agc.gov.sg/act/" in url:
             score += 50
         elif "sso.agc.gov.sg" in url:
@@ -183,61 +192,77 @@ def _rank_candidates(candidates):
     return [c for _, c in scored]
 
 
+def _short(text: str, n: int = 55) -> str:
+    return text[:n] + "..." if len(text) > n else text
+
+
 async def process_indicator(
     model, indicator_id, indicator_data,
     candidates, max_candidates, rate_delay,
     economy="", country_display="Singapore",
 ):
     """Process all candidates for one indicator and return (rows, stats)."""
-    log.info("  [%s] %s", indicator_id, indicator_data["name"])
+    title = indicator_data["name"]
+    log.info("─" * 55)
+    log.info("  [%s] %s", indicator_id, title)
+    log.info("─" * 55)
+
+    # Embedding pre-filter: batch similarity scoring (replaces most LLM pre-filter calls)
+    candidates = filter_candidates(indicator_id, indicator_data, candidates, top_n=max_candidates * 2)
+
+    # Semantic dedup: remove near-duplicate candidates
+    candidates = deduplicate_candidates(candidates)
 
     ranked = _rank_candidates(candidates)
     if ranked and ranked[0] is not candidates[0]:
-        log.info("    Re-ranked: '%s' promoted to top", ranked[0].get("title", "")[:60])
+        log.info("  >> Re-ranked: '%s' promoted to top", _short(ranked[0].get("title", "")))
 
     rows = []
     stats = {"prefiltered": 0, "scraped": 0, "extracted": 0}
 
     for cand in ranked[:max_candidates]:
         url = cand["url"]
-        log.info("    URL: %s", url)
+        label = _short(cand.get("title", ""))
+        short_u = _short(url, 65)
 
-        # Skip LLM pre-filter for curated seed URLs — they're known-good
         is_seed = cand.get("query_used") == "seed_url (curated)"
         if is_seed:
-            log.info("      Seed URL — skipping pre-filter")
+            pass
+        elif cand.get("_embedding_score", 1.0) >= 0.25:
+            pass
         else:
             relevant = await prefilter_candidate(
                 model, indicator_id, indicator_data, cand,
             )
             if not relevant:
-                log.info("      Pre-filter: SKIP (not relevant)")
+                log.info("  x %s  %s", label, short_u)
                 continue
 
         stats["prefiltered"] += 1
-        log.info("      Pre-filter: PASS")
+        log.info("  o %s  %s", label, short_u)
+
         await asyncio.sleep(rate_delay * 0.5)
 
-        scraped = await scrape_url(url)
-        if not scraped:
+        text = await scrape_url(url)
+        if not text:
             continue
 
         stats["scraped"] += 1
-        log.info("      Scraped: %d chars", len(scraped))
         await asyncio.sleep(rate_delay * 0.5)
 
         extracted = await extract_clauses(
-            model, indicator_id, indicator_data, scraped,
+            model, indicator_id, indicator_data, text,
             country_display=country_display,
         )
         if not extracted:
-            log.info("      Extraction: no relevant clause found")
+            log.info("      -> Extraction: no relevant clause found")
             await asyncio.sleep(rate_delay)
             continue
 
         stats["extracted"] += 1
         ref = extracted.get("section_reference") or "?"
-        log.info("      Extracted: %s — %s", ref, extracted.get("act_title", "?")[:60])
+        act = extracted.get("act_title") or "?"
+        log.info("      -> %s  %s", ref, _short(act))
 
         discovery_tag = cand.get("discovery_tag", "NEW")
         row = build_row(indicator_id, url, cand.get("title", ""), extracted,
@@ -246,5 +271,5 @@ async def process_indicator(
 
         await asyncio.sleep(rate_delay)
 
-    log.info("    %d row(s) for %s", len(rows), indicator_id)
+    log.info("  -> %d row(s) for %s", len(rows), indicator_id)
     return rows, stats

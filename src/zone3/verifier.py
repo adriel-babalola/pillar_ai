@@ -22,6 +22,9 @@ from src.zone2.config import (
 from src.zone2.scraper import hybrid_scrape
 
 
+def _short(text: str, n: int = 55) -> str:
+    return text[:n] + "..." if len(text) > n else text
+
 def _short_err(err: Exception) -> str:
     return str(err)[:200]
 
@@ -300,8 +303,14 @@ async def verify_csv(
 
     verified = []
     for i, row in enumerate(rows):
-        log.info("  [%d/%d] %s", i + 1, len(rows), row.get("References", ""))
+        ind = row.get("Indicator_ID", "?")
+        act = row.get("Act_and_or_practice", "?")
+        ref = row.get("Article_Section", "") or row.get("Impact_or_comments", "")[:40]
+        log.info("  [%d/%d] %s | %s | %s", i + 1, len(rows), ind, _short(act, 40), _short(ref, 40))
         vr = await verify_row(row, model_name, api_key, base_url, retries)
+        status = vr.get("Verification_Status", "?")
+        icon = {"PASS": "[OK]", "FAIL": "[X]", "NEEDS_REVIEW": "[?]", "URL_BROKEN": "[X]"}.get(status, "[?]")
+        log.info("    %s %s", icon, status)
         verified.append(vr)
         await asyncio.sleep(1)
 
@@ -320,11 +329,11 @@ async def verify_csv(
         s = r.get("Verification_Status", "NEEDS_REVIEW")
         counts[s] = counts.get(s, 0) + 1
 
+    log.info("")
     log.info("=" * 45)
     log.info("  VERIFICATION COMPLETE")
-    log.info("  PASS:         %d", counts["PASS"])
-    log.info("  FAIL:         %d", counts["FAIL"])
-    log.info("  NEEDS_REVIEW: %d", counts["NEEDS_REVIEW"])
-    log.info("  URL_BROKEN:   %d", counts["URL_BROKEN"])
-    log.info("  Saved: %s", output_path)
+    log.info("  %d rows | PASS: %d | FAIL: %d | ?: %d | BROKEN: %d",
+             len(verified), counts["PASS"], counts["FAIL"],
+             counts["NEEDS_REVIEW"], counts["URL_BROKEN"])
+    log.info("  Output: %s", output_path)
     log.info("=" * 45)

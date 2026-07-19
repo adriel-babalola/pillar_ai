@@ -61,13 +61,15 @@ async def main():
         basename = os.path.basename(input_path).replace(".csv", "_verified.csv")
         output = f"outputs/zone3/{basename}"
 
-    print(f"  Zone 3 — Blind Citation Verification")
+    print("=" * 55)
+    print("  Zone 3 — Blind Citation Verification")
     print(f"  Input:  {input_path}")
     print(f"  Output: {output}")
     print(f"  Model:  {args.model}")
+    print("=" * 55)
     print()
 
-    await verify_csv(args.input, output, model=args.model, retries=args.retries)
+    await verify_csv(input_path, output, model=args.model, retries=args.retries)
 
 
 if __name__ == "__main__":

@@ -18,6 +18,8 @@ OLLAMA_BASE = "https://ollama.com"
 ALIBABA_API_KEY = os.getenv("DASHSCOPE_API_KEY")
 ALIBABA_BASE = "https://ws-qi5wh5fl237ivx9r.ap-northeast-1.maas.aliyuncs.com/compatible-mode/v1"
 
+LAWS_SG_MCP_TOKEN = os.getenv("LAWS_SG_MCP_TOKEN") or ""
+
 DEFAULT_MODEL = "alibaba:qwen3.7-plus,gemini,ollama:gemma4"
 
 MAX_TEXT_CHARS = 485000  # Gemini handles up to 1M tokens — increase for quality
@@ -72,4 +74,13 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     datefmt="%H:%M:%S",
 )
+
+for _lib in ["crawl4ai", "httpx", "httpcore", "playwright", "openai._base_client"]:
+    logging.getLogger(_lib).setLevel(logging.WARNING)
+
 log = logging.getLogger(__name__)
+
+def short_url(url: str, max_len: int = 70) -> str:
+    if len(url) <= max_len:
+        return url
+    return url[:50] + "..." + url[-17:]

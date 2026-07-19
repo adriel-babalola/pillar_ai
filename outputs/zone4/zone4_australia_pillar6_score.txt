@@ -1,0 +1,16 @@
+=======================================================
+  RDTII SCORE REPORT - Australia, Pillar 6
+=======================================================
+  6.1  |  Score: 0.0  |  Weight: 38%  |  Weighted: 0.0000
+       No evidence found for this indicator
+  6.2  |  Score: 0.0  |  Weight: 12%  |  Weighted: 0.0000
+       No evidence found for this indicator
+  6.3  |  Score: 0.0  |  Weight: 31%  |  Weighted: 0.0000
+       No evidence found for this indicator
+  6.4  |  Score: 0.0  |  Weight: 12%  |  Weighted: 0.0000
+       No evidence found for this indicator
+  6.5  |  Score: 0.0  |  Weight: 8%  |  Weighted: 0.0000
+       Non-regulatory indicator — scored using external databases (automated extraction skipped)
+-------------------------------------------------------
+  PILLAR SCORE: 0.0000  (range: 0=open, 1=restrictive)
+=======================================================

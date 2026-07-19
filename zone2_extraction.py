@@ -64,22 +64,29 @@ async def main():
 
     all_rows = []
     totals = {"candidates": 0, "prefiltered": 0, "scraped": 0, "extracted": 0}
+    indicator_count = len([k for k in indicators if not indicators[k].get("auto_skip")])
+    done = 0
 
     for indicator_id in sorted(indicators.keys()):
         indicator_data = indicators[indicator_id]
         if indicator_data.get("auto_skip"):
+            log.info("")
+            log.info("─" * 55)
             log.info("  [%s] %s — SKIP (non-regulatory indicator)", indicator_id, indicator_data.get("name", ""))
+            log.info("─" * 55)
             continue
 
         candidates = candidates_by_indicator.get(indicator_id, [])
 
         if not candidates:
-            log.warning("  [%s] No candidates in JSON", indicator_id)
+            log.info("  !! No candidates found in JSON")
             continue
 
+        done += 1
         totals["candidates"] += min(len(candidates), args.max_candidates)
 
         limit = args.limit if args.limit > 0 else args.max_candidates
+        log.info("  [%d/%d]", done, indicator_count)
         rows, stats = await process_indicator(
             args.model, indicator_id, indicator_data,
             candidates, limit, args.rate_delay,
@@ -89,6 +96,7 @@ async def main():
         totals["prefiltered"] += stats["prefiltered"]
         totals["scraped"] += stats["scraped"]
         totals["extracted"] += stats["extracted"]
+        log.info("")
 
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
 
@@ -97,15 +105,11 @@ async def main():
         writer.writeheader()
         writer.writerows(all_rows)
 
-    log.info("")
     log.info("=" * 55)
-    log.info("  DONE")
-    log.info("  Input:    %s", input_path)
-    log.info("  Output:   %s", output_path)
-    log.info("  Processed %d candidates", totals["candidates"])
-    log.info("  Pre-filtered passed: %d", totals["prefiltered"])
-    log.info("  Successfully scraped: %d", totals["scraped"])
-    log.info("  Rows extracted: %d", totals["extracted"])
+    log.info("  EXTRACTION COMPLETE")
+    log.info("  %s | Pillar %s | %d indicators | %d total rows", economy, pillar, indicator_count, totals["extracted"])
+    log.info("  Scraped: %d/%d candidates | Extracted: %d rows", totals["scraped"], totals["candidates"], totals["extracted"])
+    log.info("  Output:  %s", output_path)
     log.info("=" * 55)
 
 

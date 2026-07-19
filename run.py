@@ -251,7 +251,11 @@ async def main():
         t0 = time.time()
         banner("RUNNING ALL: Singapore + Malaysia + Australia x Pillars 6 + 7")
         for c in ["singapore", "malaysia", "australia"]:
-            await process_country(c, ["6", "7"], zones, args.model, args.limit, args.rate_delay)
+            try:
+                await process_country(c, ["6", "7"], zones, args.model, args.limit, args.rate_delay)
+            except KeyboardInterrupt:
+                log.warning("Interrupted — skipping %s", c)
+                continue
         elapsed = time.time() - t0
         banner("FULL PIPELINE COMPLETE")
         log.info("Total time: %.1fs (%.1f min)", elapsed, elapsed / 60)
@@ -263,8 +267,15 @@ async def main():
         return
 
     pillars = [args.pillar] if args.pillar else ["6", "7"]
-    await process_country(args.country, pillars, zones, args.model, args.limit, args.rate_delay)
+    try:
+        await process_country(args.country, pillars, zones, args.model, args.limit, args.rate_delay)
+    except KeyboardInterrupt:
+        log.warning("Interrupted")
+        return
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        log.warning("Pipeline interrupted by user")

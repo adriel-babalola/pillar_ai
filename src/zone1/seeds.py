@@ -2,7 +2,12 @@ SEED_URLS = {
     "singapore": {
         "6.1": [
             {
-                "title": "Personal Data Protection Act 2012 (PDPA)",
+                "title": "Personal Data Protection Act 2012 (PDPA) — via laws.sg",
+                "url": "https://laws.sg/legislation/personal-data-protection-act-2012",
+                "snippet": "An Act to govern the collection, use and disclosure of personal data by organisations. Section 26 governs cross-border data transfers.",
+            },
+            {
+                "title": "Personal Data Protection Act 2012 (PDPA) — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/PDPA2012",
                 "snippet": "An Act to govern the collection, use and disclosure of personal data by organisations. Section 26 governs cross-border data transfers.",
             },
@@ -14,14 +19,24 @@ SEED_URLS = {
         ],
         "6.2": [
             {
-                "title": "Personal Data Protection Act 2012 (PDPA)",
+                "title": "Personal Data Protection Act 2012 (PDPA) — via laws.sg",
+                "url": "https://laws.sg/legislation/personal-data-protection-act-2012",
+                "snippet": "An Act to govern the collection, use and disclosure of personal data. No explicit data localization requirement — conditional transfer regime only.",
+            },
+            {
+                "title": "Personal Data Protection Act 2012 (PDPA) — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/PDPA2012",
                 "snippet": "An Act to govern the collection, use and disclosure of personal data. No explicit data localization requirement — conditional transfer regime only.",
             },
         ],
         "6.3": [
             {
-                "title": "Cybersecurity Act 2018",
+                "title": "Cybersecurity Act 2018 — via laws.sg",
+                "url": "https://laws.sg/legislation/cybersecurity-act-2018",
+                "snippet": "An Act to require cybersecurity information sharing and to establish the Cybersecurity Agency of Singapore. Covers critical information infrastructure.",
+            },
+            {
+                "title": "Cybersecurity Act 2018 — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/CA2018",
                 "snippet": "An Act to require cybersecurity information sharing and to establish the Cybersecurity Agency of Singapore. Covers critical information infrastructure.",
             },
@@ -38,7 +53,12 @@ SEED_URLS = {
         ],
         "6.4": [
             {
-                "title": "Personal Data Protection Act 2012 (PDPA) — Section 26",
+                "title": "Personal Data Protection Act 2012 (PDPA) — Section 26, via laws.sg",
+                "url": "https://laws.sg/legislation/personal-data-protection-act-2012",
+                "snippet": "Section 26 establishes a conditional flow regime requiring comparable protection for cross-border data transfers.",
+            },
+            {
+                "title": "Personal Data Protection Act 2012 (PDPA) — Section 26, via SSO",
                 "url": "https://sso.agc.gov.sg/Act/PDPA2012",
                 "snippet": "Section 26 establishes a conditional flow regime requiring comparable protection for cross-border data transfers.",
             },
@@ -62,45 +82,80 @@ SEED_URLS = {
         ],
         "7.1": [
             {
-                "title": "Personal Data Protection Act 2012 (PDPA)",
+                "title": "Personal Data Protection Act 2012 (PDPA) — via laws.sg",
+                "url": "https://laws.sg/legislation/personal-data-protection-act-2012",
+                "snippet": "Singapore's comprehensive data protection framework covering collection, use, disclosure, and care of personal data.",
+            },
+            {
+                "title": "Personal Data Protection Act 2012 (PDPA) — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/PDPA2012",
                 "snippet": "Singapore's comprehensive data protection framework covering collection, use, disclosure, and care of personal data.",
             },
         ],
         "7.2": [
             {
-                "title": "Cybersecurity Act 2018",
+                "title": "Cybersecurity Act 2018 — via laws.sg",
+                "url": "https://laws.sg/legislation/cybersecurity-act-2018",
+                "snippet": "An Act to establish the Cybersecurity Agency and provide for cybersecurity information sharing and critical information infrastructure protection.",
+            },
+            {
+                "title": "Cybersecurity Act 2018 — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/CA2018",
                 "snippet": "An Act to establish the Cybersecurity Agency and provide for cybersecurity information sharing and critical information infrastructure protection.",
             },
             {
-                "title": "Computer Misuse Act 1993",
+                "title": "Computer Misuse Act 1993 — via laws.sg",
+                "url": "https://laws.sg/legislation/computer-misuse-act-1993",
+                "snippet": "An Act to make provision for securing computer material against unauthorised access or modification.",
+            },
+            {
+                "title": "Computer Misuse Act 1993 — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/CMA1993",
                 "snippet": "An Act to make provision for securing computer material against unauthorised access or modification.",
             },
         ],
         "7.3": [
             {
-                "title": "Personal Data Protection Act 2012 (PDPA) — Retention Limitation",
+                "title": "Personal Data Protection Act 2012 (PDPA) — Retention Limitation, via laws.sg",
+                "url": "https://laws.sg/legislation/personal-data-protection-act-2012",
+                "snippet": "The PDPA (Section 25) requires organisations to retain personal data only for as long as necessary, establishing a minimum retention standard.",
+            },
+            {
+                "title": "Personal Data Protection Act 2012 (PDPA) — Retention Limitation, via SSO",
                 "url": "https://sso.agc.gov.sg/Act/PDPA2012",
                 "snippet": "The PDPA (Section 25) requires organisations to retain personal data only for as long as necessary, establishing a minimum retention standard.",
             },
         ],
         "7.4": [
             {
-                "title": "Personal Data Protection Act 2012 (PDPA) — DPO requirement",
+                "title": "Personal Data Protection Act 2012 (PDPA) — DPO requirement, via laws.sg",
+                "url": "https://laws.sg/legislation/personal-data-protection-act-2012",
+                "snippet": "The PDPA requires organisations to appoint a Data Protection Officer and conduct data protection impact assessments.",
+            },
+            {
+                "title": "Personal Data Protection Act 2012 (PDPA) — DPO requirement, via SSO",
                 "url": "https://sso.agc.gov.sg/Act/PDPA2012",
                 "snippet": "The PDPA requires organisations to appoint a Data Protection Officer and conduct data protection impact assessments.",
             },
         ],
         "7.5": [
             {
-                "title": "Criminal Procedure Code 2010 — Police Access to Data",
+                "title": "Criminal Procedure Code 2010 — via laws.sg",
+                "url": "https://laws.sg/legislation/criminal-procedure-code-2010",
+                "snippet": "Provisions for police access to data and documents during criminal investigations.",
+            },
+            {
+                "title": "Criminal Procedure Code 2010 — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/CPC2010",
                 "snippet": "Provisions for police access to data and documents during criminal investigations.",
             },
             {
-                "title": "Public Sector (Governance) Act 2018",
+                "title": "Public Sector (Governance) Act 2018 — via laws.sg",
+                "url": "https://laws.sg/legislation/public-sector-governance-act-2018",
+                "snippet": "Governs data sharing and management in the public sector, including government access provisions.",
+            },
+            {
+                "title": "Public Sector (Governance) Act 2018 — via SSO",
                 "url": "https://sso.agc.gov.sg/Act/PSGA2018",
                 "snippet": "Governs data sharing and management in the public sector, including government access provisions.",
             },
@@ -121,16 +176,16 @@ SEED_URLS = {
         ],
         "6.2": [
             {
-                "title": "OAIC — APP Guidelines overview",
-                "url": "https://www.oaic.gov.au/privacy/australian-privacy-principles/australian-privacy-principles-guidelines/",
-                "snippet": "Overview of Australian Privacy Principles. No explicit data localization requirement at federal level.",
+                "title": "Privacy Act 1988 — APP 8 Cross-border disclosure of personal information",
+                "url": "https://www.legislation.gov.au/C2004A03712/latest",
+                "snippet": "Full text of Australia's Privacy Act 1988. Contains the Australian Privacy Principles including APP 8 governing cross-border data disclosures. No explicit data localization requirement at federal level.",
             },
         ],
         "6.3": [
             {
-                "title": "Critical Infrastructure Act 2018 — Text from AustLII",
-                "url": "https://www5.austlii.edu.au/au/legis/cth/consol_act/ca2018264/",
-                "snippet": "Requires critical infrastructure sectors to maintain data and systems within Australia.",
+                "title": "Security of Critical Infrastructure Act 2018 — legislation.gov.au",
+                "url": "https://www.legislation.gov.au/Series/C2018A00029",
+                "snippet": "Requires critical infrastructure sectors to maintain data and systems within Australia. Sets out obligations for critical infrastructure risk management programs including data storage and processing requirements.",
             },
         ],
         "6.4": [
@@ -154,9 +209,9 @@ SEED_URLS = {
         ],
         "7.1": [
             {
-                "title": "Privacy Act 1988 — OAIC overview",
-                "url": "https://www.oaic.gov.au/privacy/your-privacy-rights/",
-                "snippet": "Australia's comprehensive data protection framework covering collection, use, disclosure, and storage of personal information.",
+                "title": "Privacy Act 1988 — Full text via legislation.gov.au",
+                "url": "https://www.legislation.gov.au/C2004A03712/latest",
+                "snippet": "Australia's comprehensive data protection framework covering collection, use, disclosure, and storage of personal information. Full text of the Act including APPs.",
             },
             {
                 "title": "Privacy Act 1988 — Full text via AustLII",
@@ -171,8 +226,8 @@ SEED_URLS = {
                 "snippet": "Establishes the cybersecurity framework for Australia including incident reporting and information sharing.",
             },
             {
-                "title": "Critical Infrastructure Act 2018 — via AustLII",
-                "url": "https://www5.austlii.edu.au/au/legis/cth/consol_act/ca2018264/",
+                "title": "Security of Critical Infrastructure Act 2018 — via legislation.gov.au",
+                "url": "https://www.legislation.gov.au/Series/C2018A00029",
                 "snippet": "Provides cybersecurity obligations for critical infrastructure sectors including reporting and risk management.",
             },
         ],
@@ -286,6 +341,11 @@ SEED_URLS = {
                 "title": "Computer Crimes Act 1997 (AGC direct PDF)",
                 "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/LOM/EN/Act%20563.pdf",
                 "snippet": "Official AGC PDF reprint of Act 563 — Computer Crimes Act 1997. Covers unauthorised access, modification, and related computer offences.",
+            },
+            {
+                "title": "Cyber Security Act 2024 — Act 854 (English PDF)",
+                "url": "https://lom.agc.gov.my/ilims/upload/portal/akta/outputaktap/2177706_BI/Act%20854.pdf",
+                "snippet": "Malaysia's dedicated cybersecurity framework establishing the National Cyber Security Committee, NCII obligations, cyber security service provider licensing, and incident management requirements.",
             },
         ],
         "7.3": [

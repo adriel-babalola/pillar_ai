@@ -21,7 +21,9 @@ _genai_client = None
 def get_openrouter_client():
     global _client_or
     if _client_or is None:
-        _client_or = AsyncOpenAI(base_url=OPENROUTER_BASE, api_key=OPENROUTER_API_KEY)
+        import httpx
+        http_client = httpx.AsyncClient(timeout=httpx.Timeout(120.0, connect=30.0))
+        _client_or = AsyncOpenAI(base_url=OPENROUTER_BASE, api_key=OPENROUTER_API_KEY, http_client=http_client)
     return _client_or
 
 
@@ -128,7 +130,9 @@ async def ollama_llm_call(model, system_prompt, user_prompt, max_tokens=1000, re
         log.error("Ollama not configured — set OLLAMA_API_KEY in .env")
         return None
 
-    client = AsyncOpenAI(base_url=f"{OLLAMA_BASE}/v1", api_key=OLLAMA_API_KEY)
+    import httpx
+    http_client = httpx.AsyncClient(timeout=httpx.Timeout(120.0, connect=30.0))
+    client = AsyncOpenAI(base_url=f"{OLLAMA_BASE}/v1", api_key=OLLAMA_API_KEY, http_client=http_client)
     for attempt in range(retries):
         try:
             resp = await client.chat.completions.create(
@@ -162,7 +166,9 @@ async def alibaba_llm_call(model, system_prompt, user_prompt, max_tokens=1000, r
         log.error("Alibaba not configured — set ALIBABA_API_KEY in .env")
         return None
 
-    client = AsyncOpenAI(base_url=ALIBABA_BASE, api_key=ALIBABA_API_KEY)
+    import httpx
+    http_client = httpx.AsyncClient(timeout=httpx.Timeout(120.0, connect=30.0))
+    client = AsyncOpenAI(base_url=ALIBABA_BASE, api_key=ALIBABA_API_KEY, http_client=http_client)
     for attempt in range(retries):
         try:
             resp = await client.chat.completions.create(

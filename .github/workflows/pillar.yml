@@ -1,0 +1,94 @@
+name: Run Pillar AI Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      country:
+        description: 'Country to process (sg, my, au, or all)'
+        required: false
+        default: 'all'
+      pillar:
+        description: 'Pillar to process (6, 7, or both)'
+        required: false
+        default: 'all'
+      zone:
+        description: 'Zone to run (discovery, extraction, verify, score, or all)'
+        required: false
+        default: 'all'
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180  # 3 hours
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Tesseract OCR
+        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr
+
+      - name: Install Playwright
+        run: pip install playwright && playwright install chromium
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}
+          DASHSCOPE_API_KEY=${{ secrets.DASHSCOPE_API_KEY }}
+          OLLAMA_API_KEY=${{ secrets.OLLAMA_API_KEY }}
+          PROXY_URL=${{ secrets.PROXY_URL }}
+          EOF
+
+      - name: Run pipeline
+        id: pipeline
+        run: |
+          if [ "${{ github.event.inputs.country }}" = "all" ] && [ "${{ github.event.inputs.zone }}" = "all" ]; then
+            python run.py --all
+          else
+            ARGS=""
+            if [ "${{ github.event.inputs.country }}" != "all" ]; then
+              ARGS="$ARGS --country ${{ github.event.inputs.country }}"
+            fi
+            if [ "${{ github.event.inputs.pillar }}" != "all" ]; then
+              ARGS="$ARGS --pillar ${{ github.event.inputs.pillar }}"
+            fi
+            if [ "${{ github.event.inputs.zone }}" != "all" ]; then
+              ARGS="$ARGS --zone ${{ github.event.inputs.zone }}"
+            fi
+            python run.py $ARGS
+          fi
+
+      - name: Upload outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pillar-ai-outputs
+          path: outputs/
+          retention-days: 90
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Pipeline Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Country: ${{ github.event.inputs.country }}" >> $GITHUB_STEP_SUMMARY
+          echo "Pillar: ${{ github.event.inputs.pillar }}" >> $GITHUB_STEP_SUMMARY
+          echo "Zone: ${{ github.event.inputs.zone }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Output files have been uploaded as artifacts and are available for 90 days." >> $GITHUB_STEP_SUMMARY
+          if [ -d outputs ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Output Files Generated:" >> $GITHUB_STEP_SUMMARY
+            find outputs -type f | sort >> $GITHUB_STEP_SUMMARY
+          fi

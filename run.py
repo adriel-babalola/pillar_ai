@@ -20,7 +20,7 @@ Usage:
 """
 
 import argparse
-import asyncio
+import csv
 import logging
 import os
 import subprocess
@@ -48,7 +48,6 @@ def resolve(raw: str) -> str:
 
 
 def banner(title: str):
-    """Print a highly visible section header."""
     w = 60
     log.info("")
     log.info("#" * w)
@@ -61,7 +60,11 @@ def run(cmd: list[str], desc: str) -> bool:
     log.info(">>> Starting: %s", desc)
     log.info(">>> Command:  %s", " ".join(cmd))
     t0 = time.time()
-    result = subprocess.run(cmd)
+    try:
+        result = subprocess.run(cmd)
+    except KeyboardInterrupt:
+        log.warning("Interrupted during %s", desc)
+        return False
     elapsed = time.time() - t0
     if result.returncode != 0:
         log.error("!!! FAILED: %s (exit code %d, took %.1fs)", desc, result.returncode, elapsed)
@@ -70,7 +73,7 @@ def run(cmd: list[str], desc: str) -> bool:
     return True
 
 
-async def run_discovery(country: str, pillar: str, limit: int = 10):
+def run_discovery(country: str, pillar: str, limit: int = 10) -> bool:
     return run(
         ["python", "zone1_discovery.py",
          "--country", country,
@@ -80,7 +83,7 @@ async def run_discovery(country: str, pillar: str, limit: int = 10):
     )
 
 
-async def run_extraction(
+def run_extraction(
     country: str, pillar: str, model: str = "",
     limit: int = 5, rate_delay: float = 3.0,
 ) -> bool:
@@ -96,10 +99,10 @@ async def run_extraction(
     return run(cmd, f"Zone 2 :: Extraction | {country} Pillar {pillar}")
 
 
-async def run_verify(country: str, pillar: str, model: str = "") -> bool:
+def run_verify(country: str, pillar: str, model: str = "") -> bool:
     csv_path = f"outputs/zone2/zone2_{resolve(country)}_pillar{pillar}.csv"
     if not os.path.exists(csv_path):
-        log.error("!!! Zone 2 CSV not found: %s — run extraction first", csv_path)
+        log.error("!!! Zone 2 CSV not found: %s -- run extraction first", csv_path)
         log.error("    python run.py --zone extraction --country %s --pillar %s", country, pillar)
         return False
     cmd = ["python", "zone3_blindverifier.py", "--input", csv_path]
@@ -108,8 +111,7 @@ async def run_verify(country: str, pillar: str, model: str = "") -> bool:
     return run(cmd, f"Zone 3 :: Verify | {country} Pillar {pillar}")
 
 
-async def run_score(country: str, pillar: str) -> bool:
-    import csv
+def run_score(country: str, pillar: str) -> bool:
     from src.zone4.scoring import score_all_indicators, compute_pillar_score, print_score_report
     from src.zone2.config import COUNTRY_DISPLAY
 
@@ -119,7 +121,7 @@ async def run_score(country: str, pillar: str) -> bool:
     csv_path = verified if os.path.exists(verified) else raw
 
     if not os.path.exists(csv_path):
-        log.error("!!! No CSV found at %s or %s — run extraction first", verified, raw)
+        log.error("!!! No CSV found at %s or %s -- run extraction first", verified, raw)
         return False
 
     log.info(">>> Scoring %s Pillar %s from: %s", economy, pillar, csv_path)
@@ -131,7 +133,7 @@ async def run_score(country: str, pillar: str) -> bool:
     result = compute_pillar_score(scores)
     report = print_score_report(result, economy, pillar)
 
-    banner(f"SCORE RESULT — {economy} Pillar {pillar}")
+    banner(f"SCORE RESULT -- {economy} Pillar {pillar}")
     print(report)
     print()
 
@@ -153,7 +155,7 @@ async def run_score(country: str, pillar: str) -> bool:
     return True
 
 
-async def process_one(
+def process_one(
     country: str,
     pillar: str,
     zones: list[str],
@@ -164,54 +166,53 @@ async def process_one(
     country_key = resolve(country)
     from src.zone2.config import COUNTRY_DISPLAY
     display = COUNTRY_DISPLAY.get(country_key, country_key.capitalize())
-    banner(f"{display} — Pillar {pillar}")
+    banner(f"{display} -- Pillar {pillar}")
 
     run_all = "all" in zones
 
     if run_all or "discovery" in zones:
-        banner(f"ZONE 1: Discovery — {display} Pillar {pillar}")
-        ok = await run_discovery(country_key, pillar, limit if limit else 10)
+        banner(f"ZONE 1: Discovery -- {display} Pillar {pillar}")
+        ok = run_discovery(country_key, pillar, limit if limit else 10)
         if not ok:
             return
-        log.info("Done Zone 1 — %s Pillar %s", display, pillar)
+        log.info("Done Zone 1 -- %s Pillar %s", display, pillar)
 
     if run_all or "extraction" in zones:
-        banner(f"ZONE 2: Extraction — {display} Pillar {pillar}")
-        ok = await run_extraction(country_key, pillar, model, limit or 5, rate_delay)
+        banner(f"ZONE 2: Extraction -- {display} Pillar {pillar}")
+        ok = run_extraction(country_key, pillar, model, limit or 5, rate_delay)
         if not ok:
             return
-        log.info("Done Zone 2 — %s Pillar %s", display, pillar)
+        log.info("Done Zone 2 -- %s Pillar %s", display, pillar)
 
     if run_all or "verify" in zones:
-        banner(f"ZONE 3: Verification — {display} Pillar {pillar}")
-        ok = await run_verify(country_key, pillar, model)
+        banner(f"ZONE 3: Verification -- {display} Pillar {pillar}")
+        ok = run_verify(country_key, pillar, model)
         if not ok:
             return
-        log.info("Done Zone 3 — %s Pillar %s", display, pillar)
+        log.info("Done Zone 3 -- %s Pillar %s", display, pillar)
 
     if run_all or "score" in zones:
-        banner(f"ZONE 4: Scoring — {display} Pillar {pillar}")
-        await run_score(country_key, pillar)
-        log.info("Done Zone 4 — %s Pillar %s", display, pillar)
+        banner(f"ZONE 4: Scoring -- {display} Pillar {pillar}")
+        run_score(country_key, pillar)
+        log.info("Done Zone 4 -- %s Pillar %s", display, pillar)
 
     log.info("Complete: %s Pillar %s", display, pillar)
 
 
-async def process_country(country: str, pillars: list[str], zones: list[str], model: str, limit: int, rate_delay: float):
+def process_country(country: str, pillars: list[str], zones: list[str], model: str, limit: int, rate_delay: float):
     country_key = resolve(country)
     from src.zone2.config import COUNTRY_DISPLAY
     display = COUNTRY_DISPLAY.get(country_key, country_key.capitalize())
-    banner(f"COUNTRY: {display} — Pillars {', '.join(pillars)}")
+    banner(f"COUNTRY: {display} -- Pillars {', '.join(pillars)}")
 
     for p in pillars:
-        await process_one(country_key, p, zones, model, limit, rate_delay)
+        process_one(country_key, p, zones, model, limit, rate_delay)
 
     log.info("")
     log.info("=" * 60)
-    log.info("  ALL DONE — %s (Pillars %s)", display, ", ".join(pillars))
+    log.info("  ALL DONE -- %s (Pillars %s)", display, ", ".join(pillars))
     log.info("=" * 60)
 
-    # Print output summary
     for p in pillars:
         z1 = f"outputs/zone1/zone1_{country_key}_pillar{p}.json"
         z2 = f"outputs/zone2/zone2_{country_key}_pillar{p}.csv"
@@ -223,9 +224,9 @@ async def process_country(country: str, pillars: list[str], zones: list[str], mo
                 log.info("  %s: %s (%d bytes)", label, path, size)
 
 
-async def main():
+def main():
     parser = argparse.ArgumentParser(
-        description="Pillar AI — Unified Pipeline",
+        description="Pillar AI -- Unified Pipeline",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Examples:\n"
@@ -252,9 +253,9 @@ async def main():
         banner("RUNNING ALL: Singapore + Malaysia + Australia x Pillars 6 + 7")
         for c in ["singapore", "malaysia", "australia"]:
             try:
-                await process_country(c, ["6", "7"], zones, args.model, args.limit, args.rate_delay)
+                process_country(c, ["6", "7"], zones, args.model, args.limit, args.rate_delay)
             except KeyboardInterrupt:
-                log.warning("Interrupted — skipping %s", c)
+                log.warning("Interrupted -- skipping %s", c)
                 continue
         elapsed = time.time() - t0
         banner("FULL PIPELINE COMPLETE")
@@ -268,14 +269,13 @@ async def main():
 
     pillars = [args.pillar] if args.pillar else ["6", "7"]
     try:
-        await process_country(args.country, pillars, zones, args.model, args.limit, args.rate_delay)
+        process_country(args.country, pillars, zones, args.model, args.limit, args.rate_delay)
     except KeyboardInterrupt:
         log.warning("Interrupted")
-        return
 
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        main()
     except KeyboardInterrupt:
         log.warning("Pipeline interrupted by user")

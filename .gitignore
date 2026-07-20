@@ -5,3 +5,4 @@ __pycache__/
 .scrape_cache/
 .venv/
 _*.txt
+~$*.xlsx

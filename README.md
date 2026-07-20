@@ -113,6 +113,27 @@ PROXY_URL=http://user:pass@proxy-server:port
 
 ---
 
+## Reset Outputs
+
+The repo ships with reference pipeline outputs (Zone 1-4 CSVs, score reports, and the hackathon submission XLSX) so newcomers can inspect expected format and behaviour without running the pipeline.
+
+To delete all outputs and start fresh:
+
+```bash
+# Preview what would be deleted
+python scripts/reset_outputs.py --dry-run
+
+# Delete with confirmation prompt
+python scripts/reset_outputs.py
+
+# Skip prompt (CI / scripting)
+python scripts/reset_outputs.py --force
+```
+
+This clears `outputs/zone1/`, `outputs/zone2/`, `outputs/zone3/`, `outputs/zone4/`, `outputs/final_output/`, and `.scrape_cache/`. Source code, config, and the inventory CSV are not touched.
+
+---
+
 ## Architecture Overview
 
 ```

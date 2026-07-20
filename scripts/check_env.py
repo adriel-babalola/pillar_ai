@@ -100,10 +100,12 @@ else:
         result = subprocess.run([sys.executable, "-m", "pip", "freeze"],
                                 capture_output=True, timeout=30)
         stdout = result.stdout.decode("utf-8", errors="replace")
+        ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
         for line in stdout.strip().split("\n"):
-            if "==" in line:
-                name, ver = line.split("==", 1)
-                pip_frozen[name.lower()] = ver
+            clean = ansi_escape.sub('', line)
+            if "==" in clean:
+                name, ver = clean.split("==", 1)
+                pip_frozen[name.lower().strip().replace("-", "_")] = ver
     except Exception:
         pass
 
@@ -112,10 +114,7 @@ else:
 
     missing = []
     for pkg_line in required_packages:
-        if "==" in pkg_line:
-            pkg_name = pkg_line.split("==")[0].strip().lower()
-        else:
-            pkg_name = pkg_line.strip().lower()
+        pkg_name = re.split(r'[><=!~]+', pkg_line)[0].strip().lower().replace("-", "_")
         if pkg_name not in pip_frozen:
             missing.append(pkg_line)
 
@@ -198,6 +197,7 @@ print()
 
 # ── 5. Module imports ──────────────────────────────────────────────
 print(bold("[5/7] Pipeline module imports"))
+sys.path.insert(0, str(project_root))
 imports_to_check = [
     ("src.zone2.config", "config"),
     ("src.zone2.client", "LLM client"),

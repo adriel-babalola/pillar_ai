@@ -1,0 +1,16 @@
+=======================================================
+  RDTII SCORE REPORT - Malaysia, Pillar 7
+=======================================================
+  7.1  |  Score: 0.5  |  Weight: 31%  |  Weighted: 0.1550
+       Sectoral data protection framework exists (limited to commercial transactions, excludes government)
+  7.2  |  Score: 0.5  |  Weight: 31%  |  Weighted: 0.1550
+       Computer misuse/criminal law exists but not a dedicated cybersecurity framework
+  7.3  |  Score: 1.0  |  Weight: 16%  |  Weighted: 0.1600
+       Minimum data retention period identified: This provision requires data users to establish a disposal schedule for inacti
+  7.4  |  Score: 1.0  |  Weight: 6%  |  Weighted: 0.0600
+       DPO requirement found (scope assumed horizontal)
+  7.5  |  Score: 1.0  |  Weight: 16%  |  Weighted: 0.1600
+       Government access to personal data identified: This provision grants the public prosecutor the power to compel communica
+-------------------------------------------------------
+  PILLAR SCORE: 0.6900  (range: 0=open, 1=restrictive)
+=======================================================

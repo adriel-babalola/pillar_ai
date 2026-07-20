@@ -1,0 +1,8 @@
+Indicator_ID,Score,Weight,Weighted_Score,Rationale
+6.1,0.5,0.38,0.19,Conditional restriction on cross-border data transfer (not a total ban): This provision establishes a conditional cross-border data transfer regime by imposing a general prohibition on transferring personal data outside Malaysia. Transfers are only permitted to destination
+6.2,1.0,0.12,0.12,Horizontal local storage requirement covering personal data
+6.3,1.0,0.31,0.31,"Infrastructure requirement identified: This text describes a sectoral data localization requirement for the financial industry, mandating that Malaysian bank data be stored in domestic data centres under Bank Negara Malaysia's RMiT policy."
+6.4,1.0,0.12,0.12,Horizontal conditional flow regime covering personal data
+6.5,0.0,0.08,0.0,Non-regulatory indicator — scored using external databases (automated extraction skipped)
+
+PILLAR_SCORE,0.7327

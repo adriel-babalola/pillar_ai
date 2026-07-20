@@ -1,0 +1,8 @@
+Indicator_ID,Score,Weight,Weighted_Score,Rationale
+7.1,0.5,0.31,0.155,"Sectoral data protection framework exists (limited to commercial transactions, excludes government)"
+7.2,0.5,0.31,0.155,Computer misuse/criminal law exists but not a dedicated cybersecurity framework
+7.3,1.0,0.16,0.16,"Minimum data retention period identified: This provision requires data users to establish a disposal schedule for inactive personal data with a specified 24-month period, effectively setting a minimum retention period of 24 months for inactiv"
+7.4,1.0,0.06,0.06,DPO requirement found (scope assumed horizontal)
+7.5,1.0,0.16,0.16,"Government access to personal data identified: This provision grants the public prosecutor the power to compel communications service providers to intercept and retain specified communications, or to authorize police to install interception device"
+
+PILLAR_SCORE,0.69

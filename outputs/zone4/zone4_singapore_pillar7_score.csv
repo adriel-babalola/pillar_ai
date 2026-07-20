@@ -1,0 +1,8 @@
+Indicator_ID,Score,Weight,Weighted_Score,Rationale
+7.1,0.0,0.31,0.0,"Comprehensive data protection framework exists: This provision sets out the fundamental purpose of the Act, establishing a comprehensive data protection framework that governs the collection, use, and disclosure of personal data across the private "
+7.2,0.0,0.31,0.0,"Dedicated cybersecurity framework exists: This provision establishes a dedicated, cross-cutting cybersecurity framework by empowering the Commissioner of Cybersecurity to oversee national cybersecurity, designate and regulate Critical Informa"
+7.3,1.0,0.16,0.16,"Minimum data retention period identified: This provision establishes a minimum data retention period of one year for records relating to an investigation conducted under the Act, or longer if specified by the Commission. This ensures that org"
+7.4,1.0,0.06,0.06,DPO requirement found (scope assumed horizontal)
+7.5,1.0,0.16,0.16,"Government access without independent judicial authorization: This provision grants law enforcement authorities the power to issue written orders compelling individuals or organizations to produce, authenticate, or provide access to data for criminal investigati"
+
+PILLAR_SCORE,0.38

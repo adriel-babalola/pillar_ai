@@ -1,0 +1,8 @@
+Indicator_ID,Score,Weight,Weighted_Score,Rationale
+7.1,0.0,0.31,0.0,Comprehensive data protection framework exists: This provision mandates that all APP entities comply with the Australian Privacy Principles (APPs). The APPs collectively establish a comprehensive data protection framework that regulates the collect
+7.2,0.0,0.31,0.0,"Dedicated cybersecurity framework exists: This provision establishes a mandatory incident reporting framework for critical infrastructure assets, requiring responsible entities to report critical cyber security incidents with a significant im"
+7.3,0.0,0.16,0.0,No minimum data retention requirement found
+7.4,1.0,0.06,0.06,DPO requirement found (scope assumed horizontal)
+7.5,1.0,0.16,0.16,Government access to personal data identified: This provision explicitly grants criminal law-enforcement agencies the authority to apply for warrants to access stored communications. This establishes a legal framework for government access to pers
+
+PILLAR_SCORE,0.22

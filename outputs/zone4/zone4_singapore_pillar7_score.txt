@@ -1,0 +1,16 @@
+=======================================================
+  RDTII SCORE REPORT - Singapore, Pillar 7
+=======================================================
+  7.1  |  Score: 0.0  |  Weight: 31%  |  Weighted: 0.0000
+       Comprehensive data protection framework exists: This provision sets out the fundamental purpose of the Act, establishing
+  7.2  |  Score: 0.0  |  Weight: 31%  |  Weighted: 0.0000
+       Dedicated cybersecurity framework exists: This provision establishes a dedicated, cross-cutting cybersecurity framework 
+  7.3  |  Score: 1.0  |  Weight: 16%  |  Weighted: 0.1600
+       Minimum data retention period identified: This provision establishes a minimum data retention period of one year for rec
+  7.4  |  Score: 1.0  |  Weight: 6%  |  Weighted: 0.0600
+       DPO requirement found (scope assumed horizontal)
+  7.5  |  Score: 1.0  |  Weight: 16%  |  Weighted: 0.1600
+       Government access without independent judicial authorization: This provision grants law enforcement authorities the powe
+-------------------------------------------------------
+  PILLAR SCORE: 0.3800  (range: 0=open, 1=restrictive)
+=======================================================

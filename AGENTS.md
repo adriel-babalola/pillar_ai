@@ -60,6 +60,8 @@ src/zone4/scoring.py
 | `zone1_discovery.py` | CLI entry: law discovery via Wikipedia + DuckDuckGo |
 | `zone2_extraction.py` | CLI entry: clause extraction via LLM (prefilter → scrape → extract → CSV) |
 | `zone3_blindverifier.py` | CLI entry: citation verification (re-fetch → regex → fuzzy → LLM fallback) |
+| `generate_hackathon_output.py` | Builds formatted XLSX for hackathon submission from all Zone 2 CSVs |
+| `check_env.py` | Stub that delegates to `scripts/check_env.py` |
 | `requirements.txt` | Python dependencies (crawl4ai, openai, pdfplumber, playwright, etc.) |
 | `.env` | API keys: DASHSCOPE, OPENROUTER, GEMINI, OLLAMA |
 | `Singapore, Malaysia, Australia, Legal Inventory.csv` | 391-row seed dataset of trade policies |
@@ -223,22 +225,27 @@ src/zone4/scoring.py
 
 ---
 
-## Current Scores
+## Current Scores (from most recent full pipeline run)
 
-| Country | Pillar | Score | Status |
-|---------|--------|-------|--------|
-| Malaysia | 6 | 0.3069 | Done |
-| Malaysia | 7 | 0.5300 | Done |
-| Australia | 6 | 0.3069 | Done |
-| Australia | 7 | — | Not run |
-| Singapore | 6 | — | Zone 1 done, needs Zone 2 |
-| Singapore | 7 | — | Zone 1 done, needs Zone 2 |
+**Do not take these as authoritative or as a benchmark.** These are pipeline-derived estimates from LLM-extracted clauses, not legal determinations. Source URLs + section refs + verbatim snippets + verification status are available in the CSVs for scrutiny.
+
+| Country | Pillar | Score |
+|---------|--------|-------|
+| Singapore | 6 | 0.3069 |
+| Singapore | 7 | 0.3800 |
+| Malaysia | 6 | 0.7327 |
+| Malaysia | 7 | 0.6900 |
+| Australia | 6 | 0.4257 |
+| Australia | 7 | 0.2200 |
 
 ---
 
 ## Key Commands
 
 ```bash
+# Validate environment (all dependencies, API keys, network)
+python check_env.py
+
 # Single country, both pillars, all zones
 python run.py --country sg
 python run.py --country my

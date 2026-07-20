@@ -1,29 +1,51 @@
 """
-Blind Citation Verifier — Instance 3 quality gate for Zone 2 extraction.
+Blind Citation Verifier — Zone 3 quality gate for Zone 2 extraction.
 
-Receives ONLY the URL and section reference from each CSV row,
-independently re-fetches the document, locates the cited section,
-and compares the actual text against the claimed snippet.
+Uses LLM (Alibaba/Gemini/Ollama fallback chain) to independently verify
+every citation by re-fetching the document and comparing the claimed
+verbatim snippet against the actual text of the cited section.
 """
 
 import asyncio
 import csv
+import json
 import re
 from difflib import SequenceMatcher
 from typing import Optional
 
-from openai import AsyncOpenAI
-
-from src.zone2.config import (
-    OPENROUTER_BASE, OPENROUTER_API_KEY,
-    ALIBABA_API_KEY, ALIBABA_BASE,
-    log,
-)
+from src.zone2.client import llm_call
+from src.zone2.config import log
 from src.zone2.scraper import hybrid_scrape
+
+VERIFICATION_SYSTEM_PROMPT = """You are a legal citation verifier. Your job is to verify whether a claimed legal clause actually appears in a given document.
+
+You will be given:
+1. A section reference (e.g. "Section 26(1)", "APP 8.1", "Seksyen 129")
+2. A claimed verbatim snippet — text the extraction pipeline says comes from that section
+3. The full document text
+
+You must:
+1. Locate the cited section in the document (search for the section number, part, article, etc.)
+2. Extract the actual verbatim text of that section
+3. Compare the claimed snippet against the actual text
+4. Return a JSON verdict
+
+Rules for comparison:
+- PASS if the claimed snippet is substantially the same as the actual text (minor whitespace/formatting differences are OK)
+- FAIL if the claimed snippet says something different from the actual text, or the section doesn't exist in the document
+- NEEDS_REVIEW if you cannot determine (e.g. document is too short, section reference is ambiguous)
+
+Return ONLY valid JSON with these fields:
+{
+  "status": "PASS" | "FAIL" | "NEEDS_REVIEW",
+  "actual_text": "The verbatim text found at the cited section (max 500 chars, or empty if not found)",
+  "explanation": "Brief reason for the verdict"
+}"""
 
 
 def _short(text: str, n: int = 55) -> str:
     return text[:n] + "..." if len(text) > n else text
+
 
 def _short_err(err: Exception) -> str:
     return str(err)[:200]
@@ -38,15 +60,11 @@ def _fuzzy_ratio(a: str, b: str) -> float:
 
 
 def _extract_section_ref(row: dict) -> Optional[str]:
-    # Try new Article_Section column first
     article_section = row.get("Article_Section", "")
     if article_section and article_section.strip():
         return article_section.strip()
 
     impact = row.get("Impact_or_comments", "")
-    # Singapore-style: Section 26(1), S. 26, s. 26
-    # Australian-style: APP 8, s 8, clause 1.4, Part III, Division 2
-    # Malaysian-style: Seksyen 129, Perkara 5, Bahagian IV
     patterns = [
         r"(Section|S\.|§)\s*([0-9]+[A-Z]*(?:\([0-9]+\))?)",
         r"(Article|Art\.)\s*([0-9]+(?:\([0-9]+\))?)",
@@ -72,15 +90,8 @@ def _extract_section_ref(row: dict) -> Optional[str]:
 
 
 def _generate_section_patterns(section_ref: str) -> list[str]:
-    """Generate regex patterns for finding a section reference in a document.
-    
-    Covers Singapore (Section 26(1), S. 26), Australia (APP 8, s 8, Clause 1.4, 
-    Part IV, Division 2, Schedule 1), and Malaysia (Seksyen 129, Perkara 5) formats.
-    """
     ref = section_ref.strip()
     patterns = [re.escape(ref)]
-
-    # Also try the ref with flexibly grouped whitespace
     patterns.append(re.sub(r"\s+", r"\\s+", re.escape(ref)))
 
     num_part = re.sub(r"[^0-9()IVXLCDMivxlcdm]", "", ref)
@@ -93,7 +104,6 @@ def _generate_section_patterns(section_ref: str) -> list[str]:
         patterns.append(r"s\.\s*" + re.escape(num))
         patterns.append(r"s\s+" + re.escape(num))
         patterns.append(r"\b" + re.escape(num) + r"\b")
-        # Australian gazette format: "26.  (1)"
         main_num = re.sub(r"\(.*\)", "", num)
         sub = re.search(r"\((\d+)\)", num)
         if main_num and sub:
@@ -103,14 +113,12 @@ def _generate_section_patterns(section_ref: str) -> list[str]:
             patterns.append(r"\b" + re.escape(main_num) + r"\." + r"\s*\S?\s*\(" + re.escape(subsection) + r"\)")
             patterns.append(r"\b" + re.escape(main_num) + r"\." + r"\s*\(" + re.escape(subsection) + r"\)")
 
-    # Handle "APP 8" or "APP 8" → look for "Australian Privacy Principle 8" or "APP 8"
     if "app" in alpha_part:
         num_only = re.sub(r"[^0-9]", "", ref)
         if num_only:
             patterns.append(r"APP\s+" + re.escape(num_only))
             patterns.append(r"Australian\s+Privacy\s+Principle\s+" + re.escape(num_only))
 
-    # Handle "Part IV" → look for "PART 4", "Part Four", "Part IV"
     if "part" in alpha_part:
         roman = re.sub(r"[^IVXLCDMivxlcdm]", "", ref).upper()
         if roman:
@@ -156,7 +164,6 @@ def _locate_section_deterministic(document: str, section_ref: str) -> Optional[s
 def _get_claim_text(row: dict) -> str:
     impact = row.get("Impact_or_comments", "")
     text = impact.split("Interpretation:", 1)[0].strip() if "Interpretation:" in impact else impact
-    # Strip leading section reference like "Section 26(1):" or "Section 26(1) - "
     text = re.sub(r"^(Section\s+\S+|S\.\s*\S+|s\.\s*\S+|Article\s+\S+|Art\.\s*\S+|APP\s+\d+|Clause\s+\S+|Seksyen\s+\S+|Perkara\s+\S+|Perenggan\s+\S+)\s*[:\-–—]?\s*", "", text, flags=re.IGNORECASE)
     return text
 
@@ -164,7 +171,6 @@ def _get_claim_text(row: dict) -> str:
 # ── Document fetching ─────────────────────────────────────────────
 
 async def fetch_document(url: str) -> Optional[str]:
-    """Reuse Zone 2 scraper with its SSO map, Playwright, and PDF fallback."""
     text, source = await hybrid_scrape(url)
     if text and len(text) >= 200:
         return text
@@ -172,48 +178,85 @@ async def fetch_document(url: str) -> Optional[str]:
     return None
 
 
-# ── LLM-assisted section location (fallback) ──────────────────────
+# ── LLM-based verification (primary) ──────────────────────────────
 
-async def _llm_locate_section(document: str, section_ref: str, model: str, api_key: str, base_url: str) -> Optional[str]:
-    if not api_key:
+VERIFICATION_USER_PROMPT_TEMPLATE = """Section Reference: {section_ref}
+
+Claimed Verbatim Snippet:
+{claimed_text}
+
+Document Text:
+{document_text}
+
+Return ONLY valid JSON with fields: status ("PASS"/"FAIL"/"NEEDS_REVIEW"), actual_text, explanation."""
+
+
+async def _llm_verify(document: str, section_ref: str, claimed_text: str, model: str) -> Optional[dict]:
+    if not claimed_text or not section_ref:
         return None
-    prompt = (
-        f"You are a legal document parser. Find the exact text of {section_ref} "
-        f"in the document below. Return ONLY the verbatim text of that section. "
-        f"If not found, return 'NOT_FOUND'.\n\n---\n{document[:40000]}"
+
+    truncated = document[:400000]
+    user_prompt = VERIFICATION_USER_PROMPT_TEMPLATE.format(
+        section_ref=section_ref,
+        claimed_text=claimed_text[:2000],
+        document_text=truncated,
     )
+
     try:
-        client = AsyncOpenAI(base_url=base_url, api_key=api_key)
-        resp = await client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0,
-            max_tokens=2000,
-        )
-        text = (resp.choices[0].message.content or "").strip()
-        if text == "NOT_FOUND" or len(text) < 15:
+        result = await llm_call(model, VERIFICATION_SYSTEM_PROMPT, user_prompt, max_tokens=800, retries=2)
+        if not result:
             return None
-        return text
-    except Exception as e:
-        log.warning("  LLM locate fallback failed: %s", _short_err(e))
+
+        raw = result.strip()
+        raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.I)
+        raw = re.sub(r"\s*```$", "", raw)
+
+        parsed = json.loads(raw)
+        if parsed.get("status") in ("PASS", "FAIL", "NEEDS_REVIEW"):
+            return parsed
         return None
+    except (json.JSONDecodeError, AttributeError) as e:
+        log.warning("  LLM verify JSON parse failed: %s", _short_err(e))
+        return None
+
+
+# ── Regex-based verification (fallback) ───────────────────────────
+
+def _regex_verify(document: str, section_ref: str, claimed_text: str) -> dict:
+    actual = _locate_section_deterministic(document, section_ref)
+    if not actual:
+        return {"status": "FAIL", "actual_text": "", "explanation": f"Section '{section_ref}' not found in document via regex"}
+
+    n_actual = _normalise(actual)
+    n_claimed = _normalise(claimed_text)
+
+    if n_actual == n_claimed:
+        return {"status": "PASS", "actual_text": actual[:800], "explanation": "Text matches claim (exact)"}
+    elif _fuzzy_ratio(n_actual, n_claimed) > 0.85:
+        return {"status": "PASS", "actual_text": actual[:800], "explanation": "Text matches claim (fuzzy)"}
+    elif n_claimed in n_actual or n_actual in n_claimed:
+        return {"status": "PASS", "actual_text": actual[:800], "explanation": "Claim is subset of actual text"}
+    else:
+        preview_a = actual[:150].replace("\n", " ")
+        preview_c = claimed_text[:150].replace("\n", " ")
+        return {
+            "status": "FAIL",
+            "actual_text": actual[:800],
+            "explanation": f"Text mismatch. Actual: '{preview_a}...' vs Claimed: '{preview_c}...'",
+        }
 
 
 # ── Main verification logic ───────────────────────────────────────
 
 async def verify_row(
     row: dict,
-    model: str,
-    api_key: str,
-    base_url: str,
+    model: str = "alibaba:qwen3.7-plus,gemini,ollama:gemma4",
     retries: int = 3,
 ) -> dict:
     url = (row.get("References") or "").strip()
-    # Also try Source_URL column (hackathon spec name)
     if not url:
         url = (row.get("Source_URL") or "").strip()
     section_ref = _extract_section_ref(row)
-    # Try Verbatim_Snippet column first, then fall back to Impact_or_comments
     claimed_text = (row.get("Verbatim_Snippet") or "").strip()
     if not claimed_text:
         claimed_text = _get_claim_text(row)
@@ -226,7 +269,10 @@ async def verify_row(
         row["Verification_Notes"] = "No URL provided"
         return row
     if not section_ref:
-        row["Verification_Notes"] = "No section reference found in Impact_or_comments"
+        row["Verification_Notes"] = "No section reference found"
+        return row
+    if not claimed_text:
+        row["Verification_Notes"] = "No claimed text to verify"
         return row
 
     for attempt in range(retries):
@@ -237,36 +283,20 @@ async def verify_row(
                 row["Verification_Notes"] = f"Could not fetch content from {url}"
                 return row
 
-            actual = _locate_section_deterministic(doc, section_ref)
-            if not actual:
-                actual = await _llm_locate_section(doc, section_ref, model, api_key, base_url)
-            if not actual:
-                row["Verification_Status"] = "FAIL"
-                row["Verification_Actual_Text"] = ""
-                row["Verification_Notes"] = f"Section '{section_ref}' not found in document"
+            # Primary: LLM-based verification
+            llm_result = await _llm_verify(doc, section_ref, claimed_text, model)
+            if llm_result:
+                row["Verification_Status"] = llm_result["status"]
+                row["Verification_Actual_Text"] = (llm_result.get("actual_text") or "")[:800]
+                row["Verification_Notes"] = llm_result.get("explanation", "")
                 return row
 
-            row["Verification_Actual_Text"] = actual[:800]
-
-            n_actual = _normalise(actual)
-            n_claimed = _normalise(claimed_text)
-
-            if n_actual == n_claimed:
-                row["Verification_Status"] = "PASS"
-                row["Verification_Notes"] = "Text matches claim"
-            elif _fuzzy_ratio(n_actual, n_claimed) > 0.85:
-                row["Verification_Status"] = "PASS"
-                row["Verification_Notes"] = "Text matches claim (fuzzy)"
-            elif n_claimed in n_actual or n_actual in n_claimed:
-                row["Verification_Status"] = "PASS"
-                row["Verification_Notes"] = "Claim is subset of actual text"
-            else:
-                row["Verification_Status"] = "FAIL"
-                preview_a = actual[:150].replace("\n", " ")
-                preview_c = claimed_text[:150].replace("\n", " ")
-                row["Verification_Notes"] = (
-                    f"Text mismatch. Actual: '{preview_a}...' vs Claimed: '{preview_c}...'"
-                )
+            # Fallback: regex-based verification
+            log.info("  LLM verify unavailable, falling back to regex")
+            result = _regex_verify(doc, section_ref, claimed_text)
+            row["Verification_Status"] = result["status"]
+            row["Verification_Actual_Text"] = result.get("actual_text", "")[:800]
+            row["Verification_Notes"] = result.get("explanation", "")
             return row
 
         except Exception as e:
@@ -282,7 +312,7 @@ async def verify_row(
 async def verify_csv(
     input_path: str,
     output_path: str,
-    model: str = "alibaba:qwen3.7-plus",
+    model: str = "alibaba:qwen3.7-plus,gemini,ollama:gemma4",
     retries: int = 3,
 ) -> None:
     with open(input_path, "r", encoding="utf-8-sig") as f:
@@ -295,19 +325,13 @@ async def verify_csv(
 
     log.info("Verifying %d rows with model %s", len(rows), model)
 
-    model_name = model.split(":", 1)[1] if ":" in model else model
-    if model.startswith("alibaba:"):
-        api_key, base_url = ALIBABA_API_KEY, ALIBABA_BASE
-    else:
-        api_key, base_url = OPENROUTER_API_KEY, OPENROUTER_BASE
-
     verified = []
     for i, row in enumerate(rows):
         ind = row.get("Indicator_ID", "?")
         act = row.get("Act_and_or_practice", "?")
         ref = row.get("Article_Section", "") or row.get("Impact_or_comments", "")[:40]
         log.info("  [%d/%d] %s | %s | %s", i + 1, len(rows), ind, _short(act, 40), _short(ref, 40))
-        vr = await verify_row(row, model_name, api_key, base_url, retries)
+        vr = await verify_row(row, model, retries)
         status = vr.get("Verification_Status", "?")
         icon = {"PASS": "[OK]", "FAIL": "[X]", "NEEDS_REVIEW": "[?]", "URL_BROKEN": "[X]"}.get(status, "[?]")
         log.info("    %s %s", icon, status)

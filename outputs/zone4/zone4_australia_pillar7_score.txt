@@ -1,0 +1,16 @@
+=======================================================
+  RDTII SCORE REPORT - Australia, Pillar 7
+=======================================================
+  7.1  |  Score: 0.0  |  Weight: 31%  |  Weighted: 0.0000
+       Comprehensive data protection framework exists: This provision mandates that all APP entities comply with the Australian
+  7.2  |  Score: 0.0  |  Weight: 31%  |  Weighted: 0.0000
+       Dedicated cybersecurity framework exists: This provision establishes a mandatory incident reporting framework for critic
+  7.3  |  Score: 0.0  |  Weight: 16%  |  Weighted: 0.0000
+       No minimum data retention requirement found
+  7.4  |  Score: 1.0  |  Weight: 6%  |  Weighted: 0.0600
+       DPO requirement found (scope assumed horizontal)
+  7.5  |  Score: 1.0  |  Weight: 16%  |  Weighted: 0.1600
+       Government access to personal data identified: This provision explicitly grants criminal law-enforcement agencies the au
+-------------------------------------------------------
+  PILLAR SCORE: 0.2200  (range: 0=open, 1=restrictive)
+=======================================================
